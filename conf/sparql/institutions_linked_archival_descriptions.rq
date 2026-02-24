@@ -1,0 +1,10 @@
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ehri: <http://lod.ehri-project-test.eu/ontology#>
+PREFIX rico: <https://www.ica.org/standards/RiC/ontology#>
+
+SELECT * WHERE {
+    ?s a ehri:Institution ;
+        rico:isOrWasHolderOf ?archivalDescription .
+    ?archivalDescription rico:title ?archivalDescriptionTitle .
+    FILTER (?s = <$institution_id>)
+}

@@ -1,0 +1,12 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ehri: <http://lod.ehri-project-test.eu/ontology#>
+PREFIX rico: <https://www.ica.org/standards/RiC/ontology#>
+PREFIX schema: <http://schema.org/>
+
+SELECT * WHERE {
+  ?sub a ?type ;
+  	rico:name|rico:title ?name ;
+	  ehri:archivalHistory|rico:generalDescription|rico:history|rico:scopeAndContent ?description .	
+  VALUES ?type {ehri:Country ehri:Institution ehri:RecordSet}
+}

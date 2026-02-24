@@ -1,0 +1,18 @@
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ehri: <http://lod.ehri-project-test.eu/ontology#>
+PREFIX rico: <https://www.ica.org/standards/RiC/ontology#>
+
+SELECT * WHERE {
+    {
+        ?s a ehri:RecordSet ;
+            ehri:hasCopy ?copy .
+        ?copy rico:name ?copyName .
+    }
+    UNION
+    {
+        ?s a ehri:RecordSet ;
+            ehri:isCopyOf ?original .
+        ?original rico:name ?originalName .
+    }
+    FILTER (?s = <$archival_description_id>)
+}

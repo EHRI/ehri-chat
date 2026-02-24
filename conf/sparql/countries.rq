@@ -1,0 +1,8 @@
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ehri: <http://lod.ehri-project-test.eu/ontology#>
+PREFIX rico: <https://www.ica.org/standards/RiC/ontology#>
+SELECT ?s ?o WHERE {
+    ?s a ehri:Country ;
+      ?p ?o .
+    FILTER (isLiteral(?o) && ?p != rico:name)
+}

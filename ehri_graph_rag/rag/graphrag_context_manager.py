@@ -1,0 +1,30 @@
+from ehri_graph_rag.rag.sparql_manager import GraphRagSPARQLManager
+from ehri_graph_rag.embeddings.embeddings_manager import GraphRagEmbeddingsManager
+
+class GraphRagContextManager:
+    def __init__(self):
+        self.sparql_manager = GraphRagSPARQLManager()
+        self.embeddings_manager = GraphRagEmbeddingsManager()
+
+    def retrieve_relevant_context(self, user_prompt):
+        relevant_entities = self.embeddings_manager.retrieve_relevant_chunks(user_prompt)
+        for entity in relevant_entities:
+            print(entity.id, entity.type)
+            match entity.type:
+                case "http://lod.ehri-project-test.eu/ontology#Country":
+                    yield self.retrieve_relevant_context_country(entity)
+                case "http://lod.ehri-project-test.eu/ontology#Institution":
+                    yield self.retrieve_relevant_context_institution(entity)
+                case "http://lod.ehri-project-test.eu/ontology#RecordSet":
+                    yield self.retrieve_relevant_context_archival_description(entity)
+                case _:
+                    yield ""
+    
+    def retrieve_relevant_context_country(self, entity):
+        return self.sparql_manager.load_relevant_data_country(entity.id)
+
+    def retrieve_relevant_context_institution(self, entity):
+        return self.sparql_manager.load_relevant_data_institution(entity.id)
+
+    def retrieve_relevant_context_archival_description(self, entity):
+        return self.sparql_manager.load_relevant_data_archival_description(entity.id)

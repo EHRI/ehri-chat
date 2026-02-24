@@ -1,0 +1,21 @@
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ehri: <http://lod.ehri-project-test.eu/ontology#>
+PREFIX rico: <https://www.ica.org/standards/RiC/ontology#>
+PREFIX schema: <http://schema.org/>
+
+SELECT * WHERE {
+    ?s a ehri:Institution ;
+    rico:name ?name .
+    OPTIONAL { ?s rico:generalDescription ?description . }
+    OPTIONAL { ?s rico:history ?history . }
+    OPTIONAL { ?s ehri:findingAids ?findingAids . }
+    OPTIONAL { ?s ehri:generalContext ?generalContext . }
+    OPTIONAL { ?s rdfs:seeAlso ?website . }
+    OPTIONAL { ?s ^rico:isOrWasLocationOfAgent/rico:name ?country . }
+    OPTIONAL { ?s schema:openingHours ?openingHours . }
+    OPTIONAL { ?s rico:agentHasOrHadLocation/rico:hasOrHadPhysicalLocation/rico:name ?name . }
+    OPTIONAL { ?s rico:agentHasOrHadLocation/rico:isOrWasContainedBy [
+        a ehri:City ;
+        rico:name ?city
+    ] }
+}

@@ -1,0 +1,21 @@
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ehri: <http://lod.ehri-project-test.eu/ontology#>
+PREFIX rico: <https://www.ica.org/standards/RiC/ontology#>
+PREFIX schema: <http://schema.org/>
+
+SELECT * WHERE {
+    ?s a ehri:RecordSet ;
+    rico:title ?title .
+    OPTIONAL { ?s rico:scopeAndContent ?scopeAndContent . }
+    OPTIONAL { ?s rico:recordResourceExtent ?recordResourceExtent . }
+    OPTIONAL { ?s rico:recordResourceStructure ?recordResourceStructure . }
+    OPTIONAL { ?s rico:date ?dates . }
+    OPTIONAL { ?s rico:hasBeginningDate ?beginningDate . }
+    OPTIONAL { ?s rico:hasEndDate ?endDate . }
+    OPTIONAL { ?s ehri:generalContext ?generalContext . }
+    OPTIONAL { ?s rdfs:seeAlso ?website . }
+    OPTIONAL { ?s rico:conditionsOfAccess ?conditionsOfAccess . }
+    OPTIONAL { ?s rico:conditionsOfUse ?conditionsOfUse . }
+    OPTIONAL { ?s rico:history ?history . }
+    OPTIONAL { ?s rico:hasOrHadHolder/rico:name ?archiveName . }
+} ORDER BY ?title

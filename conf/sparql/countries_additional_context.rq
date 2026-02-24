@@ -1,0 +1,13 @@
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ehri: <http://lod.ehri-project-test.eu/ontology#>
+PREFIX rico: <https://www.ica.org/standards/RiC/ontology#>
+
+SELECT * WHERE {
+    ?s a ehri:Country ;
+        rico:name ?name . 
+    OPTIONAL {?s ehri:archivalHistory ?history . }
+    OPTIONAL {?s ehri:archivalSituation ?archivalSituation . }
+    OPTIONAL {?s ehri:researchExtensive ?researchExtensive . }
+    OPTIONAL {?s ehri:researchSummary ?researchSummary . }
+   	FILTER (?s = <$country_id>)
+}
