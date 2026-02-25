@@ -74,10 +74,15 @@ class GraphRagSPARQLManager(SPARQLManager):
     def __init__(self):
         super().__init__()
 
-    def load_entities_chunks(self):
-        print("Retrieving entities from SPARQL endpoint...")
+    def load_entities_chunks(self, type):
+        print(f"Retrieving entities for type {type} from SPARQL endpoint...")
+        kg_types = {
+            "countries": "ehri:Country",
+            "institutions": "ehri:Institution",
+            "archival_descriptions": "ehri:RecordSet",
+        }
         with open("conf/sparql/entities_for_embedding.rq", "r", encoding="utf-8") as f:
-            self.ehri_sparql_endpoint.setQuery(f.read())
+            self.ehri_sparql_endpoint.setQuery(f.read().replace("<$type>", kg_types.get(type, "")))
         result = self.ehri_sparql_endpoint.queryAndConvert()
         return [Entity(row["sub"]["value"], 
                 row["type"]["value"], 

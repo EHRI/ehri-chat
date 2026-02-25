@@ -15,4 +15,4 @@ SELECT * WHERE {
         ?original rico:name ?originalName .
     }
     FILTER (?s = <$archival_description_id>)
-}
+} LIMIT 10
