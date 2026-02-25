@@ -7,18 +7,19 @@ class GraphRagContextManager:
         self.embeddings_manager = GraphRagEmbeddingsManager()
 
     def retrieve_relevant_context(self, user_prompt):
-        relevant_entities = self.embeddings_manager.retrieve_relevant_chunks(user_prompt)
-        for entity in relevant_entities:
-            print(entity.id, entity.type)
-            match entity.type:
-                case "http://lod.ehri-project-test.eu/ontology#Country":
-                    yield self.retrieve_relevant_context_country(entity)
-                case "http://lod.ehri-project-test.eu/ontology#Institution":
-                    yield self.retrieve_relevant_context_institution(entity)
-                case "http://lod.ehri-project-test.eu/ontology#RecordSet":
-                    yield self.retrieve_relevant_context_archival_description(entity)
-                case _:
-                    yield ""
+        for type, top_k in [("countries", 2), ("institutions", 6), ("archival_descriptions", 10)]:
+            relevant_entities = self.embeddings_manager.retrieve_relevant_chunks(user_prompt, type, top_k=top_k)
+            for entity in relevant_entities:
+                print(entity.id, entity.type)
+                match entity.type:
+                    case "http://lod.ehri-project-test.eu/ontology#Country":
+                        yield self.retrieve_relevant_context_country(entity)
+                    case "http://lod.ehri-project-test.eu/ontology#Institution":
+                        yield self.retrieve_relevant_context_institution(entity)
+                    case "http://lod.ehri-project-test.eu/ontology#RecordSet":
+                        yield self.retrieve_relevant_context_archival_description(entity)
+                    case _:
+                        yield ""
     
     def retrieve_relevant_context_country(self, entity):
         return self.sparql_manager.load_relevant_data_country(entity.id)

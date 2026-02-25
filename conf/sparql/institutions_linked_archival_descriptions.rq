@@ -7,4 +7,4 @@ SELECT * WHERE {
         rico:isOrWasHolderOf ?archivalDescription .
     ?archivalDescription rico:title ?archivalDescriptionTitle .
     FILTER (?s = <$institution_id>)
-}
+} LIMIT 10

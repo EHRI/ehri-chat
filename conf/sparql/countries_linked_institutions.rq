@@ -7,4 +7,4 @@ SELECT * WHERE {
         rico:isOrWasLocationOfAgent ?institution .
     ?institution rico:name ?institutionName .
     FILTER (?s = <$country_id>)
-}
+} LIMIT 10
