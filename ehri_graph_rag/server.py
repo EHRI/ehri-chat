@@ -1,5 +1,5 @@
 from flask import Flask, request, Response, jsonify, render_template
-from ehri_graph_rag.models.model_manager import Ministral3B, MistralSmallLatestAPI
+from ehri_graph_rag.models.model_manager import LlamaCpp, MistralAPI
 
 app = Flask(__name__, template_folder="../conf/web/templates")
 
@@ -11,22 +11,27 @@ def generate_response():
     data = request.get_json()
     messages = data.get("messages", "")
     last_message = messages[-1].get("content", "")
-    model_input = data.get("model", "mistral")
+    model_input = data.get("model", "qwen3-vl-2b-instruct")
     mode_input = data.get("mode", "graphrag")
 
+    match model_input.lower():
+        case "ministral-3b-2512":
+            model = MistralAPI()
+        case "qwen3-vl-2b-instruct":
+            model = LlamaCpp()
+        case _:
+            model = LlamaCpp()
+
     def generate():
-        if model_input == "mistral":
-            model = MistralSmallLatestAPI()
-            if mode_input == "rag":
+        match mode_input:
+            case "rag":
                 streamer = model.get_results_llm_with_rag(last_message)
-            elif mode_input == "graphrag":
+            case "graphrag":
                 streamer = model.get_results_llm_with_graphrag(last_message)
-            else:
+            case _:
                 streamer = model.get_results_llm(last_message)
-            # answer_bits = [chunk.data.choices[0].delta.content for chunk in streamer]
-            # answer = "".join(answer_bits)
-            for chunk in streamer:
-                yield chunk.data.choices[0].delta.content
+        for chunk in streamer:
+            yield chunk
         return Response("Invalid combination of options", status=400, mimetype="text/plain")
 
     return generate()
