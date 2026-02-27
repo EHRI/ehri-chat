@@ -1,45 +1,44 @@
-from ehri_graph_rag.models.model_manager import Ministral3B, MistralSmallLatestAPI
-import sys
+from ehri_graph_rag.models.model_manager import LlamaCpp, MistralAPI
+import click
 
-class ModelLoader():
-    def __init__(self):
-        self.model = None
-    
-    def get_model(self):
-        if(self.model is None):
-            self.model = MistralSmallLatestAPI()
-        return self.model
+class ModelLoader:
+    def __init__(self, model):
+        match model:
+            case "mistral":
+                self.model = MistralAPI()
+            case "qwen":
+                self.model = LlamaCpp()
+            case _:
+                self.model = LlamaCpp()
+
+@click.command()
+@click.option('--prompt',
+              help="Prompt for the model",
+              required=True)
+@click.option('--model',
+              type=click.Choice(['qwen', 'mistral']),
+              required = False,
+              help="Model to use, right now mistral for Ministral-3B-2512 or qwen for Qwen3-VL-2B-Instruct",
+              default="qwen",
+              show_default=True)
+@click.option("--mode",
+              type=click.Choice(['GraphRAG', 'RAG', 'vanilla']),
+              required = False,
+              help="The enhancement mode to use",
+              default="vanilla",
+              show_default=True)
+def ehri_graph_rag(prompt, model, mode):
+    model = ModelLoader(model).model
+    match mode:
+        case "GraphRAG":
+            streamer = model.get_results_llm_with_graphrag(prompt)
+        case "RAG":
+            streamer = model.get_results_llm_with_rag(prompt)
+        case _:
+            streamer = model.get_results_llm(prompt)
+    for chunk in streamer:
+        print(chunk, end="", flush=True)
 
 if __name__ == "__main__":
-    model_loader = ModelLoader()
-    if(len(sys.argv) >=2  and sys.argv[1] == "RAG"):
-        if(len(sys.argv) >= 3):
-            prompt = sys.argv[2]
-            print("Answering query with RAG:")
-            #streamer, thread = model_loader.get_model().get_results_llm_with_rag(prompt)
-            streamer = model_loader.get_model().get_results_llm_with_rag(prompt)
-            #model_loader.get_model().print_streamer(streamer, thread)
-            model_loader.get_model().print_streamer(streamer)
-        else:
-            print("Please provide a prompt as an argument.")
-    elif(len(sys.argv) >=2  and sys.argv[1] == "GraphRAG"):
-        if(len(sys.argv) >= 3):
-            prompt = sys.argv[2]
-            print("Answering query with GraphRAG:")
-            #streamer, thread = model_loader.get_model().get_results_llm_with_rag(prompt)
-            streamer = model_loader.get_model().get_results_llm_with_graphrag(prompt)
-            #model_loader.get_model().print_streamer(streamer, thread)
-            model_loader.get_model().print_streamer(streamer)
-        else:
-            print("Please provide a prompt as an argument.")
-    else:
-        if(len(sys.argv) >= 2):
-            prompt = sys.argv[1]
-            print("Answering query without RAG:")
-            #streamer, thread = model_loader.get_model().get_results_llm(prompt)
-            streamer = model_loader.get_model().get_results_llm(prompt)
-            #model_loader.get_model().print_streamer(streamer, thread)
-            model_loader.get_model().print_streamer(streamer)
-        else:
-            print("Please provide a prompt as an argument.")
+    ehri_graph_rag()
 
