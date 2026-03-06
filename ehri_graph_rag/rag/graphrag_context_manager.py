@@ -1,5 +1,7 @@
 from ehri_graph_rag.rag.sparql_manager import GraphRagSPARQLManager
 from ehri_graph_rag.embeddings.embeddings_manager import GraphRagEmbeddingsManager
+import logging
+logger = logging.getLogger("ehri_graph_rag")
 
 class GraphRagContextManager:
     def __init__(self):
@@ -9,8 +11,9 @@ class GraphRagContextManager:
     def retrieve_relevant_context(self, user_prompt):
         for type, top_k in [("countries", 2), ("institutions", 6), ("archival_descriptions", 10)]:
             relevant_entities = self.embeddings_manager.retrieve_relevant_chunks(user_prompt, type, top_k=top_k)
+            logger.debug("Retrieved entities for GraphRag:")
             for entity in relevant_entities:
-                print(entity.id, entity.type)
+                logger.debug(f"{entity.type} {entity.id}")
                 match entity.type:
                     case "http://lod.ehri-project-test.eu/ontology#Country":
                         yield self.retrieve_relevant_context_country(entity)

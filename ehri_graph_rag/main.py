@@ -1,5 +1,9 @@
 from ehri_graph_rag.models.model_manager import LlamaCpp, MistralAPI
 import click
+import logging
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.WARN)
+logging.basicConfig(level=logging.WARN)
 
 class ModelLoader:
     def __init__(self, model):
@@ -40,5 +44,6 @@ def ehri_graph_rag(prompt, model, mode):
         print(chunk, end="", flush=True)
 
 if __name__ == "__main__":
+    logging.getLogger("ehri_graph_rag").setLevel(logging.WARN)
     ehri_graph_rag()
 

@@ -5,11 +5,12 @@ import numpy as np
 import json
 import os
 import time
+import logging
+logger = logging.getLogger("ehri_graph_rag")
 
-class EmbeddingsManager():
+class EmbeddingsManager:
     def __init__(self):
         self.model = SentenceTransformer("all-MiniLM-L6-v2")
-        
 
 class RagEmbeddingsManager(EmbeddingsManager):
     def __init__(self):
@@ -28,6 +29,7 @@ class RagEmbeddingsManager(EmbeddingsManager):
     def retrieve_relevant_chunks(self, query, top_k=6):
         query_vec = self.model.encode([query])
         distances, indices = self.index.search(query_vec, top_k)
+        logger.debug(f"Distances for RAG retrieval: {distances}")
         return [self.chunks[indices[0][i]] for i in range(len(indices[0]))] #if distances[0][i] < 0.94]
 
     def retrieve_contents(self, index, chunks_list):
@@ -39,13 +41,13 @@ class RagEmbeddingsManager(EmbeddingsManager):
     
     def retrieve_archival_descriptions_contents(self, step, index, chunks_list):
         completed = False
-        while(not completed):
+        while not completed:
             try:
                 partial_contents = list(self.sparql_manager.load_archival_descriptions_chunks(step=step, step_size=10000))
                 self.encode_chunks_and_persist_to_index(partial_contents, index, chunks_list)
                 completed = True
             except Exception as e:
-                print(f"Error retrieving archival descriptions chunks for step {step}: {e}. Waiting 1 min and retrying...")
+                logger.error(f"Error retrieving archival descriptions chunks for step {step}: {e}. Waiting 1 min and retrying...")
                 time.sleep(60)
 
     def retrieve_faiss_index(self):
@@ -94,7 +96,7 @@ class GraphRagEmbeddingsManager(EmbeddingsManager):
         query_vec = self.model.encode([query])
         index, chunks = self.loaded_files[type]
         distances, indices = index.search(query_vec, top_k)
-        print(distances)
+        logger.debug(f"Distances for GraphRag retrieval of type {type}: {distances}")
         return [self.to_entity(chunks[indices[0][i]]) for i in range(len(indices[0])) if distances[0][i] < 1]
 
     def retrieve_faiss_index(self, type):
@@ -127,8 +129,7 @@ URI: {entity.id}
 Description: {entity.description}"""
     
 if __name__ == "__main__":
-    #manager = RagEmbeddingsManager()
-    #manager.create_faiss_index()
-    #manager = GraphRagEmbeddingsManager()
-    #manager.create_faiss_index()
-    print("Not generating new indexes")
+    manager = RagEmbeddingsManager()
+    manager.create_faiss_index()
+    manager = GraphRagEmbeddingsManager()
+    manager.create_faiss_index()
