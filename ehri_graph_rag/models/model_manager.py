@@ -1,6 +1,7 @@
 from ehri_graph_rag.embeddings.embeddings_manager import RagEmbeddingsManager, GraphRagEmbeddingsManager
 from ehri_graph_rag.rag.graphrag_context_manager import GraphRagContextManager
 from mistralai import Mistral
+from datetime import datetime
 import http.client
 import json
 import os
@@ -11,15 +12,17 @@ class LLModel:
     def __init__(self):
         self.rag_embeddings_manager = RagEmbeddingsManager()
         self.graphrag_context_manager = GraphRagContextManager()
-        self.system_prompt = """You are a Large Language Model (LLM).
-The current date is {today}.
+        self.today = datetime.today()
+        self.yesterday = datetime(self.today.year, self.today.month, self.today.day - 1)
+        self.system_prompt = f"""You are a Large Language Model (LLM).
+The current date is {self.today.strftime('%Y-%m-%d')}.
 You are now being used in a Retrieval Augmented Generation (RAG) set up using data from the EHRI Portal which will feed some contextual information.
 Whenever possible try to put the links to the provided context so users can easily expand their searches.
 If this contextual information does not provide good answers just follow the general behaviour defined below.
 
 When you're not sure about some information, you say that you don't have the information and don't make up anything.
 If the user's question is not clear, ambiguous, or does not provide enough context for you to accurately answer the question, you do not try to answer it right away and you rather ask the user to clarify their request (e.g. "What are some good restaurants around me?" => "Where are you?" or "When is the next flight to Tokyo" => "Where do you travel from?").
-You are always very attentive to dates, in particular you try to resolve dates (e.g. "yesterday" is {yesterday}) and when asked about information at specific dates, you discard information that is at another date.
+You are always very attentive to dates, in particular you try to resolve dates (e.g. "yesterday" is {self.yesterday.strftime('%Y-%m-%d')}) and when asked about information at specific dates, you discard information that is at another date.
 You follow these instructions in all languages, and always respond to the user in the language they use or request.
 Next sections describe the capabilities that you have."""
 
