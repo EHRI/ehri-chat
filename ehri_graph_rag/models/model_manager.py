@@ -1,12 +1,16 @@
-from ehri_graph_rag.embeddings.embeddings_manager import RagEmbeddingsManager
+from ehri_graph_rag.embeddings.embeddings_manager import RagEmbeddingsManager, GraphRagEmbeddingsManager
 from ehri_graph_rag.rag.graphrag_context_manager import GraphRagContextManager
 from mistralai import Mistral
 import http.client
 import json
 import os
+import logging
+logger = logging.getLogger("ehri_graph_rag")
 
 class LLModel:
     def __init__(self):
+        self.rag_embeddings_manager = RagEmbeddingsManager()
+        self.graphrag_context_manager = GraphRagContextManager()
         self.system_prompt = """You are a Large Language Model (LLM).
 The current date is {today}.
 You are now being used in a Retrieval Augmented Generation (RAG) set up using data from the EHRI Portal which will feed some contextual information.
@@ -41,12 +45,12 @@ Answer:
 """
 
     def get_results_llm_with_rag(self, user_prompt):
-        relevant_context = "\n\n".join(RagEmbeddingsManager().retrieve_relevant_chunks(user_prompt))
+        relevant_context = "\n\n".join(self.rag_embeddings_manager.retrieve_relevant_chunks(user_prompt))
         prompt_with_context = self.generate_rag_prompt(user_prompt, relevant_context)
         return self.get_results_llm(prompt_with_context)
 
     def get_results_llm_with_graphrag(self, user_prompt):
-        relevant_context = "\n\n".join(GraphRagContextManager().retrieve_relevant_context(user_prompt))
+        relevant_context = "\n\n".join(self.graphrag_context_manager.retrieve_relevant_context(user_prompt))
         prompt_with_context = self.generate_rag_prompt(user_prompt, relevant_context)
         return self.get_results_llm(prompt_with_context)
 
@@ -57,6 +61,7 @@ class MistralAPI(LLModel):
         self.client = Mistral(api_key=os.getenv("MISTRAL_API_KEY", ""))
 
     def get_results_llm(self, user_prompt):
+        logger.debug(f"Generated prompt: {user_prompt}")
         response = self.client.chat.stream(model="mistral-small-latest", messages=self.generate_messages(user_prompt))
         def generate():
             for chunk in response:
@@ -70,6 +75,7 @@ class LlamaCpp(LLModel):
         self.path = "/v1/chat/completions"
 
     def get_results_llm(self, user_prompt):
+        logger.debug(f"Generated prompt: {user_prompt}")
         conn = http.client.HTTPConnection(self.endpoint)
         headers = {'Content-type': 'application/json'}
         json_data = json.dumps({

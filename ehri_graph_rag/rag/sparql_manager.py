@@ -1,5 +1,7 @@
 from SPARQLWrapper import SPARQLWrapper, JSON
 from dataclasses import dataclass
+import logging
+logger = logging.getLogger("ehri_graph_rag")
 
 class SPARQLManager():
     def __init__(self):
@@ -38,7 +40,7 @@ class RagSPARQLManager(SPARQLManager):
         super().__init__()
 
     def load_countries_chunks(self):
-        print("Retrieving countries from SPARQL endpoint...")
+        logger.info("Retrieving countries from SPARQL endpoint...")
         with open("conf/sparql/countries.rq", "r", encoding="utf-8") as f:
             self.ehri_sparql_endpoint.setQuery(f.read())
         result = self.ehri_sparql_endpoint.queryAndConvert()
@@ -46,7 +48,7 @@ class RagSPARQLManager(SPARQLManager):
         return list(map(lambda x: self.overlap_chunks(chunks, x), chunks))
 
     def load_institutions_chunks(self):
-        print("Retrieving institutions from SPARQL endpoint...")
+        logger.info("Retrieving institutions from SPARQL endpoint...")
         with open("conf/sparql/institutions.rq", "r", encoding="utf-8") as f:
             self.ehri_sparql_endpoint.setQuery(f.read())
         result = self.ehri_sparql_endpoint.queryAndConvert()
@@ -54,7 +56,7 @@ class RagSPARQLManager(SPARQLManager):
             yield self.generate_chunk_institution_from_template(row)
             
     def load_archival_descriptions_chunks(self, step, step_size):
-        print("Retrieving archival descriptions from SPARQL endpoint...")
+        logger.info("Retrieving archival descriptions from SPARQL endpoint...")
         with open("conf/sparql/archival_descriptions.rq", "r", encoding="utf-8") as f:
             self.ehri_sparql_endpoint.setQuery(f.read() + " LIMIT " + str(step_size) + " OFFSET " + str(step * step_size))
         result = self.ehri_sparql_endpoint.queryAndConvert()
@@ -75,7 +77,7 @@ class GraphRagSPARQLManager(SPARQLManager):
         super().__init__()
 
     def load_entities_chunks(self, type):
-        print(f"Retrieving entities for type {type} from SPARQL endpoint...")
+        logger.info(f"Retrieving entities for type {type} from SPARQL endpoint...")
         kg_types = {
             "countries": "ehri:Country",
             "institutions": "ehri:Institution",
