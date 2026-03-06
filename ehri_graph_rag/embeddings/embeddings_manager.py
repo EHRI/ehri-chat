@@ -8,9 +8,17 @@ import time
 import logging
 logger = logging.getLogger("ehri_graph_rag")
 
+class SentenceTransformerSingletonAdapter:
+    instance = None
+
+    def __new__(cls):
+        if cls.instance is None:
+            cls.instance = SentenceTransformer("all-MiniLM-L6-v2")
+        return cls.instance
+
 class EmbeddingsManager:
     def __init__(self):
-        self.model = SentenceTransformer("all-MiniLM-L6-v2")
+        self.model = SentenceTransformerSingletonAdapter()
 
 class RagEmbeddingsManager(EmbeddingsManager):
     def __init__(self):
