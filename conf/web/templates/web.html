@@ -108,7 +108,7 @@
         }
 
         .message-content {
-            white-space: pre-wrap;
+            white-space: normal;
             line-height: 1.6;
             max-width: 100%;
         }
@@ -305,8 +305,9 @@
             </button>
         </div>
     </div>
-
-    <script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/dompurify@3.3.3/dist/purify.min.js"></script>
+    <script type="text/javascript">
         const API_URL = 'http://localhost:5000';
         const chatContainer = document.getElementById('chatContainer');
         const chatWrapper = document.getElementById('chatWrapper');
@@ -450,7 +451,7 @@
                 const reader = response.body.getReader();
                 const decoder = new TextDecoder();
                 let fullResponse = '';
-                assistantContent.textContent = '';
+                assistantContent.innerHTML = '';
 
                 while (true) {
                     const { done, value } = await reader.read();
@@ -461,7 +462,8 @@
 
                     for (const chunk of chunks) {
                         fullResponse += chunk;
-                        assistantContent.textContent = fullResponse;
+                        const regex = /<p>\s*<\/p>/gi;
+                        assistantContent.innerHTML = DOMPurify.sanitize(marked.parse(fullResponse).replaceAll(regex, ""));
                         chatContainer.scrollTop = chatContainer.scrollHeight;
                         // if (line.startsWith('data: ')) {
                         //     try {
