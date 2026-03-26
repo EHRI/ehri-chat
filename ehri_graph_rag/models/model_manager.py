@@ -5,6 +5,8 @@ from mistralai import Mistral
 from datetime import datetime
 import http.client
 import json
+from google import genai
+from google.genai import types
 import os
 import logging
 logger = logging.getLogger("ehri_graph_rag")
@@ -75,6 +77,51 @@ class MistralAPI(LLModel):
                 yield chunk.data.choices[0].delta.content
         return generate()
 
+class GeminiAPI(LLModel):
+    def __init__(self):
+        super().__init__()
+
+    async def get_results_llm(self, user_prompt, mcp = False, model = None):
+        client = genai.Client(
+            api_key=os.environ.get("GEMINI_API_KEY"),
+        )
+        model = "gemini-2.5-flash"
+        contents = [
+            types.Content(
+                role="user",
+                parts=[
+                    types.Part.from_text(text=user_prompt),
+                ],
+            ),
+        ]
+        if mcp:
+            await self.mcp_client.connect()
+        #tools = self.mcp_client.mcp_tools_to_gemini(await self.mcp_client.get_tools()) if mcp else []
+        tools = [self.mcp_client.session] if mcp else []
+        generate_content_config = types.GenerateContentConfig(
+            temperature=0.5,
+            thinking_config=types.ThinkingConfig(
+                thinking_budget=0,
+            ),
+            tools=tools,
+            system_instruction=[
+                types.Part.from_text(text=self.system_prompt),
+            ],
+        )
+
+        async def generate():
+            try:
+                async for chunk in await client.aio.models.generate_content_stream(
+                        model=model,
+                        contents=contents,
+                        config=generate_content_config,
+                ):
+                    yield chunk.text
+            finally:
+                if mcp:
+                    await self.mcp_client.close()
+        return generate()
+
 class LlamaCpp(LLModel):
     def __init__(self):
         super().__init__()
@@ -94,7 +141,7 @@ class LlamaCpp(LLModel):
             dict_initial_data['model'] = model
         if mcp:
             await self.mcp_client.connect()
-            tools = await self.mcp_client.get_tools()
+            tools = self.mcp_client.mcp_tools_to_openai(await self.mcp_client.get_tools())
             dict_initial_data['tools'] = tools
         json_initial_data = json.dumps(dict_initial_data)
         async def generate(json_data):

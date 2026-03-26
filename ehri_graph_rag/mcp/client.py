@@ -1,6 +1,7 @@
 from contextlib import AsyncExitStack
 from mcp import ClientSession
 from mcp.client.streamable_http import streamable_http_client
+from google.genai import types
 import re
 
 class MCPClient:
@@ -31,6 +32,16 @@ class MCPClient:
             for t in tools
         ]
 
+    async def mcp_tools_to_gemini(self, tools):
+        return types.Tool(function_declarations=[
+            {
+                "name": tool.name,
+                "description": tool.description,
+                "parameters": tool.inputSchema,
+            }
+            for tool in tools
+        ])
+
     async def call_mcp_tool(self, name: str, args: dict) -> str:
         result = await self.session.call_tool(name, args)
         return "\n".join(
@@ -38,7 +49,7 @@ class MCPClient:
         )
 
     async def get_tools(self):
-        return self.mcp_tools_to_openai((await self.session.list_tools()).tools)
+        return (await self.session.list_tools()).tools
 
     async def close(self):
         await self.exit_stack.aclose()

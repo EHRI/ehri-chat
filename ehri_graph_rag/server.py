@@ -1,6 +1,6 @@
 from typing import Generator, Any
 from flask import Flask, request, Response, jsonify, render_template
-from ehri_graph_rag.models.model_manager import LlamaCpp, MistralAPI
+from ehri_graph_rag.models.model_manager import LlamaCpp, MistralAPI, GeminiAPI
 import asyncio
 import logging
 logger = logging.getLogger(__name__)
@@ -8,6 +8,7 @@ logger.setLevel(logging.INFO)
 
 app = Flask(__name__, template_folder="../conf/web/templates")
 mistral_api = MistralAPI()
+gemini_api = GeminiAPI()
 llama_cpp = LlamaCpp()
 logging.getLogger("ehri_graph_rag").setLevel(logging.WARN)
 logging.basicConfig(level=logging.WARN)
@@ -28,6 +29,8 @@ def generate_response():
     match model_input.lower():
         case "ministral-3b-2512":
             model = mistral_api
+        case "gemini-2.5-flash":
+            model = gemini_api
         case "qwen3-vl:2b-instruct-q4_K_M":
             model = llama_cpp
         case _:
