@@ -287,12 +287,13 @@
                 onkeydown="handleKeyDown(event)"
             ></textarea>
             <select name="modelInput" class="model-input">
-                <option value="Qwen3-VL-2B-Instruct">Qwen3-VL-2B-Instruct</option>
+                <option value="Qwen3-VL:2B-Instruct-Q4_K_M">Qwen3-VL:2B-Instruct-Q4_K_M</option>
                 <option value="Ministral-3B-2512">Ministral-3B-2512</option>
             </select>
             <select name="modeInput" class="mode-input">
                 <option value="graphrag">GraphRAG</option>
                 <option value="rag">RAG</option>
+                <option value="mcp">MCP</option>
                 <option value="vanilla">Vanilla</option>
             </select>
             <button id="sendButton" class="send-button" onclick="sendMessage()" disabled>
