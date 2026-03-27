@@ -7,13 +7,14 @@ import re
 class MCPClient:
     def __init__(self):
         self.exit_stack = AsyncExitStack()
+        self.server = "https://lod.ehri-project-test.eu/mcp"
         self.transport = None
         self.session = None
         self.write = None
         self.read = None
 
     async def connect(self):
-        self.transport = await self.exit_stack.enter_async_context(streamable_http_client("https://lod.ehri-project-test.eu/mcp"))
+        self.transport = await self.exit_stack.enter_async_context(streamable_http_client(self.server))
         self.read, self.write, _ = self.transport
         self.session = await self.exit_stack.enter_async_context(ClientSession(self.read, self.write))
         await self.session.initialize()
