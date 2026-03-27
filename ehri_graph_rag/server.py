@@ -7,9 +7,6 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 app = Flask(__name__, template_folder="../conf/web/templates")
-mistral_api = MistralAPI()
-gemini_api = GeminiAPI()
-llama_cpp = LlamaCpp()
 logging.getLogger("ehri_graph_rag").setLevel(logging.WARN)
 logging.basicConfig(level=logging.WARN)
 
@@ -28,13 +25,13 @@ def generate_response():
 
     match model_input.lower():
         case "mistral-small-latest":
-            model = mistral_api
+            model = MistralAPI()
         case "gemini-2.5-flash":
-            model = gemini_api
+            model = GeminiAPI()
         case "qwen3-vl:2b-instruct-q4_K_M":
-            model = llama_cpp
+            model = LlamaCpp()
         case _:
-            model = llama_cpp
+            model = LlamaCpp()
 
     async def generate():
         match mode_input:
