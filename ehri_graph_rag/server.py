@@ -27,7 +27,7 @@ def generate_response():
     logger.info(f"Received message \"{last_message}\" to be resolved using mode {mode_input} and model {model_input}")
 
     match model_input.lower():
-        case "ministral-3b-2512":
+        case "mistral-small-latest":
             model = mistral_api
         case "gemini-2.5-flash":
             model = gemini_api

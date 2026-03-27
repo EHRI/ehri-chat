@@ -1,7 +1,10 @@
 from ehri_graph_rag.embeddings.embeddings_manager import RagEmbeddingsManager, GraphRagEmbeddingsManager
 from ehri_graph_rag.mcp.client import MCPClient
 from ehri_graph_rag.rag.graphrag_context_manager import GraphRagContextManager
-from mistralai import Mistral
+from mistralai.client import Mistral
+from mistralai.extra.run.context import RunContext
+from mistralai.extra.mcp.sse import MCPClientSSE, SSEServerParams
+from mistralai.extra.run.result import RunResult
 from datetime import datetime
 import http.client
 import json
@@ -71,10 +74,84 @@ class MistralAPI(LLModel):
 
     async def get_results_llm(self, user_prompt, mcp = False, model = None):
         logger.debug(f"Generated prompt: {user_prompt}")
-        response = self.client.chat.stream(model=model if model is not None else "mistral-small-latest", messages=self.generate_messages(user_prompt))
+            # This is not yet supported for streamable http MCP servers
+            # if mcp:
+            #     mcp_client = MCPClientSSE(sse_params=SSEServerParams(url=self.mcp_client.server, timeout=100))
+            #     async with RunContext(
+            #             model=model if model is not None else "mistral-small-latest",
+            #     ) as run_ctx:
+            #         await run_ctx.register_mcp_client(mcp_client=mcp_client)
+            #         response = await self.client.beta.conversations.run_stream_async(
+            #             run_ctx=run_ctx,
+            #             inputs=self.generate_messages(user_prompt),
+            #         )
+            #         run_result = None
+            #         async for event in response:
+            #             if isinstance(event, RunResult):
+            #                 run_result = event
+            #             else:
+            #                 print(event)
+            #         for entry in run_result.output_entries:
+            #             yield entry
+            # else:
+        tools = None
+        if mcp:
+            await self.mcp_client.connect()
+            tools = self.mcp_client.mcp_tools_to_openai(await self.mcp_client.get_tools())
         async def generate():
-            for chunk in response:
-                yield chunk.data.choices[0].delta.content
+            try:
+                agent_loop = True # first execution
+                messages = self.generate_messages(user_prompt)
+                while agent_loop:
+                    agent_loop = tools is not None
+                    if mcp:
+                        response = await self.client.chat.stream_async(
+                            model=model if model is not None else "mistral-small-latest",
+                            messages=messages,
+                            tools=tools,
+                            tool_choice="auto"
+                        )
+                    else:
+                        response = await self.client.chat.stream_async(
+                            model=model if model is not None else "mistral-small-latest",
+                            messages=messages
+                        )
+                    async for chunk in response:
+                        finish_reason = chunk.data.choices[0].finish_reason
+                        if finish_reason not in ["tool_content", None, "tool_calls"]:
+                            agent_loop = False
+                        if chunk.data.choices[0].delta.tool_calls is not None and chunk.data.choices[0].delta.tool_calls:
+                            tools_calls = []
+                            tools_results = []
+                            for tc in chunk.data.choices[0].delta.tool_calls:
+                                args = json.loads(tc.function.arguments)
+                                tools_calls.append({
+                                    "id": tc.id,
+                                    "function": {
+                                        "name": tc.function.name,
+                                        "arguments": args
+                                    }
+                                })
+                                logger.debug(f"  → calling tool {tc.function.name}({args})")
+                                tool_result = await self.mcp_client.call_mcp_tool(tc.function.name, args)
+                                tools_results.append({
+                                    "role": "tool",
+                                    "name": tc.function.name,
+                                    "tool_call_id": tc.id,
+                                    "content": tool_result,
+                                })
+                            messages.append({
+                                "role": "assistant",
+                                "content": chunk.data.choices[0].delta.content,
+                                "tool_calls": tools_calls
+                            })  # This is specifically needed for Mistral (see order of messages for Mistral API).
+                            for tr in tools_results:
+                                messages.append(tr)
+                        else:
+                            yield chunk.data.choices[0].delta.content
+            finally:
+                if mcp:
+                    await self.mcp_client.close()
         return generate()
 
 class GeminiAPI(LLModel):
