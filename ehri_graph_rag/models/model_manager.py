@@ -16,8 +16,6 @@ logger = logging.getLogger("ehri_graph_rag")
 
 class LLModel:
     def __init__(self):
-        self.rag_embeddings_manager = RagEmbeddingsManager()
-        self.graphrag_context_manager = GraphRagContextManager()
         self.today = datetime.today()
         self.yesterday = datetime(self.today.year, self.today.month, self.today.day - 1)
         self.system_prompt = f"""You are a Large Language Model (LLM).
@@ -31,7 +29,6 @@ If the user's question is not clear, ambiguous, or does not provide enough conte
 You are always very attentive to dates, in particular you try to resolve dates (e.g. "yesterday" is {self.yesterday.strftime('%Y-%m-%d')}) and when asked about information at specific dates, you discard information that is at another date.
 You follow these instructions in all languages, and always respond to the user in the language they use or request.
 Next sections describe the capabilities that you have."""
-        self.mcp_client = MCPClient()
 
     def generate_messages(self, user_prompt):
         return [{
@@ -55,24 +52,24 @@ Answer:
 """
 
     async def get_results_llm_with_rag(self, user_prompt, model = None):
-        relevant_context = "\n\n".join(self.rag_embeddings_manager.retrieve_relevant_chunks(user_prompt))
+        relevant_context = "\n\n".join(RagEmbeddingsManager().retrieve_relevant_chunks(user_prompt))
         prompt_with_context = self.generate_rag_prompt(user_prompt, relevant_context)
         return await self.get_results_llm(prompt_with_context, model = model)
 
     async def get_results_llm_with_graphrag(self, user_prompt, model = None):
-        relevant_context = "\n\n".join(self.graphrag_context_manager.retrieve_relevant_context(user_prompt))
+        relevant_context = "\n\n".join(GraphRagContextManager().retrieve_relevant_context(user_prompt))
         prompt_with_context = self.generate_rag_prompt(user_prompt, relevant_context)
         return await self.get_results_llm(prompt_with_context, model = model)
 
     async def get_results_llm_with_mcp(self, user_prompt, model = None):
-        return await self.get_results_llm(user_prompt, mcp = True, model = model)
+        return await self.get_results_llm(user_prompt, mcp = MCPClient(), model = model)
     
 class MistralAPI(LLModel):
     def __init__(self):
         super().__init__()
         self.client = Mistral(api_key=os.getenv("MISTRAL_API_KEY", ""))
 
-    async def get_results_llm(self, user_prompt, mcp = False, model = None):
+    async def get_results_llm(self, user_prompt, mcp = None, model = None):
         logger.debug(f"Generated prompt: {user_prompt}")
             # This is not yet supported for streamable http MCP servers
             # if mcp:
@@ -96,8 +93,8 @@ class MistralAPI(LLModel):
             # else:
         tools = None
         if mcp:
-            await self.mcp_client.connect()
-            tools = self.mcp_client.mcp_tools_to_openai(await self.mcp_client.get_tools())
+            await mcp.connect()
+            tools = mcp.mcp_tools_to_openai(await mcp.get_tools())
         async def generate():
             try:
                 agent_loop = True # first execution
@@ -133,7 +130,7 @@ class MistralAPI(LLModel):
                                     }
                                 })
                                 logger.debug(f"  → calling tool {tc.function.name}({args})")
-                                tool_result = await self.mcp_client.call_mcp_tool(tc.function.name, args)
+                                tool_result = await mcp.call_mcp_tool(tc.function.name, args)
                                 tools_results.append({
                                     "role": "tool",
                                     "name": tc.function.name,
@@ -151,14 +148,14 @@ class MistralAPI(LLModel):
                             yield chunk.data.choices[0].delta.content
             finally:
                 if mcp:
-                    await self.mcp_client.close()
+                    await mcp.close()
         return generate()
 
 class GeminiAPI(LLModel):
     def __init__(self):
         super().__init__()
 
-    async def get_results_llm(self, user_prompt, mcp = False, model = None):
+    async def get_results_llm(self, user_prompt, mcp = None, model = None):
         client = genai.Client(
             api_key=os.environ.get("GEMINI_API_KEY"),
         )
@@ -172,9 +169,9 @@ class GeminiAPI(LLModel):
             ),
         ]
         if mcp:
-            await self.mcp_client.connect()
-        #tools = self.mcp_client.mcp_tools_to_gemini(await self.mcp_client.get_tools()) if mcp else []
-        tools = [self.mcp_client.session] if mcp else []
+            await mcp.connect()
+        #tools = mcp.mcp_tools_to_gemini(await mcp.get_tools()) if mcp else []
+        tools = [mcp.session] if mcp else []
         generate_content_config = types.GenerateContentConfig(
             temperature=0.5,
             thinking_config=types.ThinkingConfig(
@@ -196,7 +193,7 @@ class GeminiAPI(LLModel):
                     yield chunk.text
             finally:
                 if mcp:
-                    await self.mcp_client.close()
+                    await mcp.close()
         return generate()
 
 class LlamaCpp(LLModel):
@@ -205,7 +202,7 @@ class LlamaCpp(LLModel):
         self.endpoint = "localhost:11434"
         self.path = "/v1/chat/completions"
 
-    async def get_results_llm(self, user_prompt, mcp = False, model = None):
+    async def get_results_llm(self, user_prompt, mcp = None, model = None):
         tools = None
         logger.debug(f"Generated prompt: {user_prompt}")
         conn = http.client.HTTPConnection(self.endpoint)
@@ -217,8 +214,8 @@ class LlamaCpp(LLModel):
         if model is not None:
             dict_initial_data['model'] = model
         if mcp:
-            await self.mcp_client.connect()
-            tools = self.mcp_client.mcp_tools_to_openai(await self.mcp_client.get_tools())
+            await mcp.connect()
+            tools = mcp.mcp_tools_to_openai(await mcp.get_tools())
             dict_initial_data['tools'] = tools
         json_initial_data = json.dumps(dict_initial_data)
         async def generate(json_data):
@@ -238,7 +235,7 @@ class LlamaCpp(LLModel):
                                     for tc in chunk['choices'][0]['delta']['tool_calls']:
                                         args = json.loads(tc['function']['arguments'])
                                         logger.debug(f"  → calling tool {tc['function']['name']}({args})")
-                                        tool_result = await self.mcp_client.call_mcp_tool(tc['function']['name'], args)
+                                        tool_result = await mcp.call_mcp_tool(tc['function']['name'], args)
                                         json_payload = json.loads(json_data)
                                         json_payload['messages'].append({
                                             "role": "tool",
@@ -251,5 +248,5 @@ class LlamaCpp(LLModel):
                                     yield message_part if message_part is not None else ""
             finally:
                 if mcp:
-                    await self.mcp_client.close()
+                    await mcp.close()
         return generate(json_initial_data)
