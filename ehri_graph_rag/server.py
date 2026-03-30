@@ -1,5 +1,6 @@
 from typing import Generator, Any
 from flask import Flask, request, Response, jsonify, render_template
+from ehri_graph_rag.database.database_manager import DatabaseManager, ActivityRecord
 from ehri_graph_rag.models.model_manager import LlamaCpp, MistralAPI, GeminiAPI
 import asyncio
 import logging
@@ -34,17 +35,27 @@ def generate_response():
             model = LlamaCpp()
 
     async def generate():
-        match mode_input:
-            case "rag":
-                streamer = await model.get_results_llm_with_rag(last_message, model = model_input.lower())
-            case "graphrag":
-                streamer = await model.get_results_llm_with_graphrag(last_message, model = model_input.lower())
-            case "mcp":
-                streamer = await model.get_results_llm_with_mcp(last_message, model = model_input.lower())
-            case _:
-                streamer = await model.get_results_llm(last_message, model = model_input.lower())
-        async for chunk in streamer:
-            yield chunk
+        output = ""
+        error = None
+        try:
+            match mode_input:
+                case "rag":
+                    streamer = await model.get_results_llm_with_rag(last_message, model = model_input.lower())
+                case "graphrag":
+                    streamer = await model.get_results_llm_with_graphrag(last_message, model = model_input.lower())
+                case "mcp":
+                    streamer = await model.get_results_llm_with_mcp(last_message, model = model_input.lower())
+                case _:
+                    streamer = await model.get_results_llm(last_message, model = model_input.lower())
+
+            async for chunk in streamer:
+                output += chunk
+                yield chunk
+        except Exception as e:
+            error = str(e)
+        finally:
+            DatabaseManager().insert_activity(ActivityRecord(last_message, mode_input, model_input, output, error))
+
     return __iter_over_async(generate())
 
 @app.route("/health")
