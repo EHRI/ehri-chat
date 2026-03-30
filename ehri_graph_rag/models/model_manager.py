@@ -18,7 +18,9 @@ class LLModel:
     def __init__(self):
         self.today = datetime.today()
         self.yesterday = datetime(self.today.year, self.today.month, self.today.day - 1)
-        self.system_prompt = f"""You are a Large Language Model (LLM).
+
+    def generate_rag_system_prompt(self):
+        return f"""You are a Large Language Model (LLM).
 The current date is {self.today.strftime('%Y-%m-%d')}.
 You are now being used in a Retrieval Augmented Generation (RAG) set up using data from the EHRI Portal which will feed some contextual information.
 Whenever possible try to put the links to the provided context so users can easily expand their searches.
@@ -30,10 +32,24 @@ You are always very attentive to dates, in particular you try to resolve dates (
 You follow these instructions in all languages, and always respond to the user in the language they use or request.
 Next sections describe the capabilities that you have."""
 
-    def generate_messages(self, user_prompt):
+    def generate_mcp_system_prompt(self):
+        return f"""You are a Large Language Model (LLM).
+    The current date is {self.today.strftime('%Y-%m-%d')}.
+    You have the ability to consult an Model Context Protocol (MCP) server with data from the EHRI Portal.
+    While the MCP is based on the EHRI-KG and semantic web technologies, you do not have to conform to any specific syntax and you must only use free text to consult it.
+    Whenever possible try to put the links to the provided context so users can easily expand their searches.
+    If this additional information does not provide good answers just follow the general behaviour defined below.
+
+    When you're not sure about some information, you say that you don't have the information and don't make up anything.
+    If the user's question is not clear, ambiguous, or does not provide enough context for you to accurately answer the question, you do not try to answer it right away and you rather ask the user to clarify their request (e.g. "What are some good restaurants around me?" => "Where are you?" or "When is the next flight to Tokyo" => "Where do you travel from?").
+    You are always very attentive to dates, in particular you try to resolve dates (e.g. "yesterday" is {self.yesterday.strftime('%Y-%m-%d')}) and when asked about information at specific dates, you discard information that is at another date.
+    You follow these instructions in all languages, and always respond to the user in the language they use or request.
+    Next sections describe the capabilities that you have."""
+
+    def generate_messages(self, user_prompt, mcp = False):
         return [{
                     "role": "system",
-                    "content": self.system_prompt
+                    "content": self.generate_rag_system_prompt() if not mcp else self.generate_mcp_system_prompt()
                 },
                 {
                     "content": user_prompt,
@@ -98,7 +114,7 @@ class MistralAPI(LLModel):
         async def generate():
             try:
                 agent_loop = True # first execution
-                messages = self.generate_messages(user_prompt)
+                messages = self.generate_messages(user_prompt, mcp = mcp is not None)
                 while agent_loop:
                     agent_loop = tools is not None
                     if mcp:
@@ -179,7 +195,7 @@ class GeminiAPI(LLModel):
             ),
             tools=tools,
             system_instruction=[
-                types.Part.from_text(text=self.system_prompt),
+                types.Part.from_text(text=self.generate_mcp_system_prompt() if mcp else self.generate_rag_system_prompt()),
             ],
         )
 
@@ -208,7 +224,7 @@ class LlamaCpp(LLModel):
         conn = http.client.HTTPConnection(self.endpoint)
         headers = {'Content-type': 'application/json'}
         dict_initial_data = {
-            "messages": self.generate_messages(user_prompt),
+            "messages": self.generate_messages(user_prompt, mcp = mcp is not None),
             "stream": True,
         }
         if model is not None:
