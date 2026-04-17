@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from ehri_graph_rag.embeddings.embeddings_manager import RagEmbeddingsManager, GraphRagEmbeddingsManager
 from ehri_graph_rag.mcp.client import MCPClient
 from ehri_graph_rag.rag.graphrag_context_manager import GraphRagContextManager
@@ -13,6 +14,13 @@ from google.genai import types
 import os
 import logging
 logger = logging.getLogger("ehri_graph_rag")
+
+@dataclass
+class LLMGenerationOptions:
+    model: str = None,
+    temperature: float = 0.1
+    top_k: int = 20,
+    max_tokens: int = 2048
 
 class LLModel:
     def __init__(self):
@@ -67,25 +75,25 @@ Query: {user_prompt}
 Answer:
 """
 
-    async def get_results_llm_with_rag(self, user_prompt, model = None):
+    async def get_results_llm_with_rag(self, user_prompt: str, generation_options: LLMGenerationOptions = LLMGenerationOptions()):
         relevant_context = "\n\n".join(RagEmbeddingsManager().retrieve_relevant_chunks(user_prompt))
         prompt_with_context = self.generate_rag_prompt(user_prompt, relevant_context)
-        return await self.get_results_llm(prompt_with_context, model = model)
+        return await self.get_results_llm(prompt_with_context, generation_options = generation_options)
 
-    async def get_results_llm_with_graphrag(self, user_prompt, model = None):
+    async def get_results_llm_with_graphrag(self, user_prompt, generation_options: LLMGenerationOptions = LLMGenerationOptions()):
         relevant_context = "\n\n".join(GraphRagContextManager().retrieve_relevant_context(user_prompt))
         prompt_with_context = self.generate_rag_prompt(user_prompt, relevant_context)
-        return await self.get_results_llm(prompt_with_context, model = model)
+        return await self.get_results_llm(prompt_with_context, generation_options = generation_options)
 
-    async def get_results_llm_with_mcp(self, user_prompt, model = None):
-        return await self.get_results_llm(user_prompt, mcp = MCPClient(), model = model)
+    async def get_results_llm_with_mcp(self, user_prompt, generation_options: LLMGenerationOptions = LLMGenerationOptions()):
+        return await self.get_results_llm(user_prompt, mcp = MCPClient(), generation_options = generation_options)
     
 class MistralAPI(LLModel):
     def __init__(self):
         super().__init__()
         self.client = Mistral(api_key=os.getenv("MISTRAL_API_KEY", ""))
 
-    async def get_results_llm(self, user_prompt, mcp = None, model = None):
+    async def get_results_llm(self, user_prompt, mcp = None, generation_options: LLMGenerationOptions = LLMGenerationOptions()):
         logger.debug(f"Generated prompt: {user_prompt}")
             # This is not yet supported for streamable http MCP servers
             # if mcp:
@@ -119,15 +127,21 @@ class MistralAPI(LLModel):
                     agent_loop = tools is not None
                     if mcp:
                         response = await self.client.chat.stream_async(
-                            model=model if model is not None else "mistral-small-latest",
+                            model=generation_options.model if generation_options.model is not None else "mistral-small-latest",
                             messages=messages,
                             tools=tools,
-                            tool_choice="auto"
+                            tool_choice="auto",
+                            temperature=generation_options.temperature,
+                            max_tokens=generation_options.max_tokens,
+                            #top_k is not provided
                         )
                     else:
                         response = await self.client.chat.stream_async(
-                            model=model if model is not None else "mistral-small-latest",
-                            messages=messages
+                            model=generation_options.model if generation_options.model is not None else "mistral-small-latest",
+                            messages=messages,
+                            temperature=generation_options.temperature,
+                            max_tokens=generation_options.max_tokens,
+                            # top_k is not provided
                         )
                     async for chunk in response:
                         finish_reason = chunk.data.choices[0].finish_reason
@@ -171,11 +185,11 @@ class GeminiAPI(LLModel):
     def __init__(self):
         super().__init__()
 
-    async def get_results_llm(self, user_prompt, mcp = None, model = None):
+    async def get_results_llm(self, user_prompt, mcp = None, generation_options: LLMGenerationOptions = LLMGenerationOptions()):
         client = genai.Client(
             api_key=os.environ.get("GEMINI_API_KEY"),
         )
-        model = "gemini-2.5-flash"
+        model = generation_options.model if generation_options.model is not None else "gemini-2.5-flash"
         contents = [
             types.Content(
                 role="user",
@@ -189,7 +203,9 @@ class GeminiAPI(LLModel):
         #tools = mcp.mcp_tools_to_gemini(await mcp.get_tools()) if mcp else []
         tools = [mcp.session] if mcp else []
         generate_content_config = types.GenerateContentConfig(
-            temperature=0.5,
+            temperature=generation_options.temperature,
+            top_k=generation_options.top_k,
+            max_output_tokens=generation_options.max_tokens,
             thinking_config=types.ThinkingConfig(
                 thinking_budget=0,
             ),
@@ -218,7 +234,7 @@ class LlamaCpp(LLModel):
         self.endpoint = "localhost:11434"
         self.path = "/v1/chat/completions"
 
-    async def get_results_llm(self, user_prompt, mcp = None, model = None):
+    async def get_results_llm(self, user_prompt, mcp = None, generation_options: LLMGenerationOptions = LLMGenerationOptions()):
         tools = None
         logger.debug(f"Generated prompt: {user_prompt}")
         conn = http.client.HTTPConnection(self.endpoint)
@@ -226,9 +242,14 @@ class LlamaCpp(LLModel):
         dict_initial_data = {
             "messages": self.generate_messages(user_prompt, mcp = mcp is not None),
             "stream": True,
+            "options": {
+                "temperature": generation_options.temperature,
+                "top_k": generation_options.top_k,
+                "num_predict": generation_options.max_tokens
+            }
         }
-        if model is not None:
-            dict_initial_data['model'] = model
+        if generation_options.model is not None:
+            dict_initial_data['model'] = generation_options.model
         if mcp:
             await mcp.connect()
             tools = mcp.mcp_tools_to_openai(await mcp.get_tools())
