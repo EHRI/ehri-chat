@@ -9,6 +9,8 @@ class ActivityRecord:
     prompt: str
     mode: str
     model: str
+    temperature: float
+    top_k: int
     output: str
     error: str
 
@@ -33,11 +35,11 @@ class DatabaseManager:
 
     def insert_activity(self, activity: ActivityRecord):
         self._connect()
-        data = [(activity.prompt, activity.mode, activity.model, activity.output, activity.error if activity.error else "")]
+        data = [(activity.prompt, activity.mode, activity.model, activity.temperature, activity.top_k, activity.output, activity.error if activity.error else "")]
         cursor = self.connection.cursor()
         try:
-            cursor.executemany("""INSERT INTO activity (timestamp, prompt, mode, model, output, error)
-            VALUES(CURRENT_TIMESTAMP, ?, ?, ?, ?, ?);""""", data)
+            cursor.executemany("""INSERT INTO activity (timestamp, prompt, mode, model, temperature, top_k, output, error)
+            VALUES(CURRENT_TIMESTAMP, ?, ?, ?, ?, ?, ?, ?);""""", data)
             self.connection.commit()
         except sqlite3.Error as e:
             logger.error("Error while inserting data into the database", e)

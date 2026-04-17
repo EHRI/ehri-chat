@@ -1,7 +1,7 @@
 from typing import Generator, Any
 from flask import Flask, request, Response, jsonify, render_template
 from ehri_graph_rag.database.database_manager import DatabaseManager, ActivityRecord
-from ehri_graph_rag.models.model_manager import LlamaCpp, MistralAPI, GeminiAPI
+from ehri_graph_rag.models.model_manager import LlamaCpp, MistralAPI, GeminiAPI, LLMGenerationOptions
 import asyncio
 import logging
 logger = logging.getLogger(__name__)
@@ -21,6 +21,15 @@ def generate_response():
     last_message = messages[-1].get("content", "")
     model_input = data.get("model", "qwen3-vl:2b-instruct-q4_K_M")
     mode_input = data.get("mode", "graphrag")
+    top_k = data.get("top_k", LLMGenerationOptions().top_k)
+    temperature = data.get("temperature", LLMGenerationOptions().temperature)
+    max_tokens = data.get("max_tokens", LLMGenerationOptions().max_tokens)
+    llm_generation_options = LLMGenerationOptions(
+        model=model_input.lower(),
+        temperature=temperature,
+        top_k=top_k,
+        max_tokens=max_tokens
+    )
 
     logger.info(f"Received message \"{last_message}\" to be resolved using mode {mode_input} and model {model_input}")
 
@@ -40,13 +49,13 @@ def generate_response():
         try:
             match mode_input:
                 case "rag":
-                    streamer = await model.get_results_llm_with_rag(last_message, model = model_input.lower())
+                    streamer = await model.get_results_llm_with_rag(last_message, generation_options = llm_generation_options)
                 case "graphrag":
-                    streamer = await model.get_results_llm_with_graphrag(last_message, model = model_input.lower())
+                    streamer = await model.get_results_llm_with_graphrag(last_message, generation_options = llm_generation_options)
                 case "mcp":
-                    streamer = await model.get_results_llm_with_mcp(last_message, model = model_input.lower())
+                    streamer = await model.get_results_llm_with_mcp(last_message, generation_options = llm_generation_options)
                 case _:
-                    streamer = await model.get_results_llm(last_message, model = model_input.lower())
+                    streamer = await model.get_results_llm(last_message, generation_options = llm_generation_options)
 
             async for chunk in streamer:
                 output += chunk
@@ -54,7 +63,7 @@ def generate_response():
         except Exception as e:
             error = str(e)
         finally:
-            DatabaseManager().insert_activity(ActivityRecord(last_message, mode_input, model_input, output, error))
+            DatabaseManager().insert_activity(ActivityRecord(last_message, mode_input, model_input, temperature, top_k, output, error))
 
     return __iter_over_async(generate())
 
