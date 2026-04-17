@@ -54,8 +54,8 @@ Next sections describe the capabilities that you have."""
     You follow these instructions in all languages, and always respond to the user in the language they use or request.
     Next sections describe the capabilities that you have."""
 
-    def generate_messages(self, user_prompt, mcp = False):
-        return [{
+    def generate_messages(self, user_prompt, history: list = None, mcp = False):
+        last_message = [{
                     "role": "system",
                     "content": self.generate_rag_system_prompt() if not mcp else self.generate_mcp_system_prompt()
                 },
@@ -63,6 +63,8 @@ Next sections describe the capabilities that you have."""
                     "content": user_prompt,
                     "role": "user"
                 }]
+        previous_messages = history if history is not None else []
+        return previous_messages + last_message
 
     def generate_rag_prompt(self, user_prompt, relevant_context):
         return f"""
@@ -75,25 +77,25 @@ Query: {user_prompt}
 Answer:
 """
 
-    async def get_results_llm_with_rag(self, user_prompt: str, generation_options: LLMGenerationOptions = LLMGenerationOptions()):
+    async def get_results_llm_with_rag(self, user_prompt: str, history: list = None, generation_options: LLMGenerationOptions = LLMGenerationOptions()):
         relevant_context = "\n\n".join(RagEmbeddingsManager().retrieve_relevant_chunks(user_prompt))
         prompt_with_context = self.generate_rag_prompt(user_prompt, relevant_context)
-        return await self.get_results_llm(prompt_with_context, generation_options = generation_options)
+        return await self.get_results_llm(prompt_with_context, history = history, generation_options = generation_options)
 
-    async def get_results_llm_with_graphrag(self, user_prompt, generation_options: LLMGenerationOptions = LLMGenerationOptions()):
+    async def get_results_llm_with_graphrag(self, user_prompt, history: list = None, generation_options: LLMGenerationOptions = LLMGenerationOptions()):
         relevant_context = "\n\n".join(GraphRagContextManager().retrieve_relevant_context(user_prompt))
         prompt_with_context = self.generate_rag_prompt(user_prompt, relevant_context)
-        return await self.get_results_llm(prompt_with_context, generation_options = generation_options)
+        return await self.get_results_llm(prompt_with_context, history = history, generation_options = generation_options)
 
-    async def get_results_llm_with_mcp(self, user_prompt, generation_options: LLMGenerationOptions = LLMGenerationOptions()):
-        return await self.get_results_llm(user_prompt, mcp = MCPClient(), generation_options = generation_options)
+    async def get_results_llm_with_mcp(self, user_prompt, history: list = None, generation_options: LLMGenerationOptions = LLMGenerationOptions()):
+        return await self.get_results_llm(user_prompt, history = history, mcp = MCPClient(), generation_options = generation_options)
     
 class MistralAPI(LLModel):
     def __init__(self):
         super().__init__()
         self.client = Mistral(api_key=os.getenv("MISTRAL_API_KEY", ""))
 
-    async def get_results_llm(self, user_prompt, mcp = None, generation_options: LLMGenerationOptions = LLMGenerationOptions()):
+    async def get_results_llm(self, user_prompt, history: list = None, mcp = None, generation_options: LLMGenerationOptions = LLMGenerationOptions()):
         logger.debug(f"Generated prompt: {user_prompt}")
             # This is not yet supported for streamable http MCP servers
             # if mcp:
@@ -122,7 +124,7 @@ class MistralAPI(LLModel):
         async def generate():
             try:
                 agent_loop = True # first execution
-                messages = self.generate_messages(user_prompt, mcp = mcp is not None)
+                messages = self.generate_messages(user_prompt, history = history, mcp = mcp is not None)
                 while agent_loop:
                     agent_loop = tools is not None
                     if mcp:
@@ -185,19 +187,25 @@ class GeminiAPI(LLModel):
     def __init__(self):
         super().__init__()
 
-    async def get_results_llm(self, user_prompt, mcp = None, generation_options: LLMGenerationOptions = LLMGenerationOptions()):
+    async def get_results_llm(self, user_prompt, mcp = None, history: list = None, generation_options: LLMGenerationOptions = LLMGenerationOptions()):
         client = genai.Client(
             api_key=os.environ.get("GEMINI_API_KEY"),
         )
         model = generation_options.model if generation_options.model is not None else "gemini-2.5-flash"
-        contents = [
-            types.Content(
+        history = [types.Content(
+                role=message['role'] if message['role'] != "assistant" else "model",
+                parts=[
+                    types.Part.from_text(text=message['content']),
+                ],
+            ) for message in history] if history is not None else []
+        new_message = [types.Content(
                 role="user",
                 parts=[
                     types.Part.from_text(text=user_prompt),
                 ],
             ),
         ]
+        contents = history + new_message
         if mcp:
             await mcp.connect()
         #tools = mcp.mcp_tools_to_gemini(await mcp.get_tools()) if mcp else []
@@ -234,13 +242,13 @@ class LlamaCpp(LLModel):
         self.endpoint = "localhost:11434"
         self.path = "/v1/chat/completions"
 
-    async def get_results_llm(self, user_prompt, mcp = None, generation_options: LLMGenerationOptions = LLMGenerationOptions()):
+    async def get_results_llm(self, user_prompt, mcp = None, history: list = None, generation_options: LLMGenerationOptions = LLMGenerationOptions()):
         tools = None
         logger.debug(f"Generated prompt: {user_prompt}")
         conn = http.client.HTTPConnection(self.endpoint)
         headers = {'Content-type': 'application/json'}
         dict_initial_data = {
-            "messages": self.generate_messages(user_prompt, mcp = mcp is not None),
+            "messages": self.generate_messages(user_prompt, history = history, mcp = mcp is not None),
             "stream": True,
             "options": {
                 "temperature": generation_options.temperature,

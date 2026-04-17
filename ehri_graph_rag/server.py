@@ -18,6 +18,7 @@ def generate_response():
 
     data = request.get_json()
     messages = data.get("messages", "")
+    previous_messages = messages[0:-1]
     last_message = messages[-1].get("content", "")
     model_input = data.get("model", "qwen3-vl:2b-instruct-q4_K_M")
     mode_input = data.get("mode", "graphrag")
@@ -49,13 +50,13 @@ def generate_response():
         try:
             match mode_input:
                 case "rag":
-                    streamer = await model.get_results_llm_with_rag(last_message, generation_options = llm_generation_options)
+                    streamer = await model.get_results_llm_with_rag(last_message, history = previous_messages, generation_options = llm_generation_options)
                 case "graphrag":
-                    streamer = await model.get_results_llm_with_graphrag(last_message, generation_options = llm_generation_options)
+                    streamer = await model.get_results_llm_with_graphrag(last_message, history = previous_messages, generation_options = llm_generation_options)
                 case "mcp":
-                    streamer = await model.get_results_llm_with_mcp(last_message, generation_options = llm_generation_options)
+                    streamer = await model.get_results_llm_with_mcp(last_message, history = previous_messages, generation_options = llm_generation_options)
                 case _:
-                    streamer = await model.get_results_llm(last_message, generation_options = llm_generation_options)
+                    streamer = await model.get_results_llm(last_message, history = previous_messages, generation_options = llm_generation_options)
 
             async for chunk in streamer:
                 output += chunk
@@ -63,7 +64,7 @@ def generate_response():
         except Exception as e:
             error = str(e)
         finally:
-            DatabaseManager().insert_activity(ActivityRecord(last_message, mode_input, model_input, temperature, top_k, output, error))
+            DatabaseManager().insert_activity(ActivityRecord(last_message, previous_messages, mode_input, model_input, temperature, top_k, output, error))
 
     return __iter_over_async(generate())
 
