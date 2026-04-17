@@ -7,6 +7,7 @@ logger = logging.getLogger("ehri_graph_rag")
 @dataclass
 class ActivityRecord:
     prompt: str
+    history: list
     mode: str
     model: str
     temperature: float
@@ -35,11 +36,11 @@ class DatabaseManager:
 
     def insert_activity(self, activity: ActivityRecord):
         self._connect()
-        data = [(activity.prompt, activity.mode, activity.model, activity.temperature, activity.top_k, activity.output, activity.error if activity.error else "")]
+        data = [(activity.prompt, str(activity.history), activity.mode, activity.model, activity.temperature, activity.top_k, activity.output, activity.error if activity.error else "")]
         cursor = self.connection.cursor()
         try:
-            cursor.executemany("""INSERT INTO activity (timestamp, prompt, mode, model, temperature, top_k, output, error)
-            VALUES(CURRENT_TIMESTAMP, ?, ?, ?, ?, ?, ?, ?);""""", data)
+            cursor.executemany("""INSERT INTO activity (timestamp, prompt, history, mode, model, temperature, top_k, output, error)
+            VALUES(CURRENT_TIMESTAMP, ?, ?, ?, ?, ?, ?, ?, ?);""""", data)
             self.connection.commit()
         except sqlite3.Error as e:
             logger.error("Error while inserting data into the database", e)
