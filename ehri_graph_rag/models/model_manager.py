@@ -177,7 +177,9 @@ class MistralAPI(LLModel):
                             for tr in tools_results:
                                 messages.append(tr)
                         else:
-                            yield chunk.data.choices[0].delta.content
+                            message_part = chunk.data.choices[0].delta.content
+                            if message_part is not None and message_part.strip():
+                                yield message_part
             finally:
                 if mcp:
                     await mcp.close()
