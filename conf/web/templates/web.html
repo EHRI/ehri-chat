@@ -163,6 +163,33 @@
             display: flex;
             gap: 0.75rem;
             align-items: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .input-wrapper .chat-input {
+            flex-grow: 3
+        }
+
+        .input-wrapper .configuration-options {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            flex-grow: 2
+        }
+
+        .input-wrapper .configuration-options .mode-input {
+            flex-grow: 2;
+        }
+
+        .input-wrapper .configuration-options .model-input {
+            flex-grow: 3;
+        }
+
+        .input-wrapper .send-button {
+            flex-grow: 1;
+            min-width: 54px;
+            min-height: 54px;
         }
 
         .model-input, .mode-input {
@@ -288,17 +315,19 @@
                 rows="1"
                 onkeydown="handleKeyDown(event)"
             ></textarea>
-            <select name="modelInput" class="model-input">
-                <option value="Qwen3-VL:2B-Instruct-Q4_K_M">Qwen3-VL:2B-Instruct-Q4_K_M</option>
-                <option value="Mistral-small-latest">Mistral-small-latest</option>
-                <option value="Gemini-2.5-Flash">Gemini-2.5-Flash</option>
-            </select>
-            <select name="modeInput" class="mode-input">
-                <option value="graphrag">GraphRAG</option>
-                <option value="rag">RAG</option>
-                <option value="mcp">MCP</option>
-                <option value="vanilla">Vanilla</option>
-            </select>
+            <div class="configuration-options">
+                <select name="modelInput" class="model-input">
+                    <option value="Qwen3-VL:2B-Instruct-Q4_K_M">Qwen3-VL:2B-Instruct-Q4_K_M</option>
+                    <option value="Mistral-small-latest">Mistral-small-latest</option>
+                    <option value="Gemini-2.5-Flash">Gemini-2.5-Flash</option>
+                </select>
+                <select name="modeInput" class="mode-input">
+                    <option value="graphrag">GraphRAG</option>
+                    <option value="rag">RAG</option>
+                    <option value="mcp">MCP</option>
+                    <option value="vanilla">Vanilla</option>
+                </select>
+            </div>
             <button id="sendButton" class="send-button" onclick="sendMessage()" disabled>
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M22 2L11 13"></path>
