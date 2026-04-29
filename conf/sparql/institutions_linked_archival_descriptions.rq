@@ -6,5 +6,6 @@ SELECT * WHERE {
     ?s a ehri:Institution ;
         rico:isOrWasHolderOf ?archivalDescription .
     ?archivalDescription rico:title ?archivalDescriptionTitle .
+    BIND(IRI(REPLACE(STR(?archivalDescription), "http://lod.ehri-project-test.eu/units/", "https://portal.ehri-project.eu/units/")) AS ?portalLink)
     FILTER (?s = <$institution_id>)
 } LIMIT 10
