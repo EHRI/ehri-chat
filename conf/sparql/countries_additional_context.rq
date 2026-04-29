@@ -9,5 +9,6 @@ SELECT * WHERE {
     OPTIONAL {?s ehri:archivalSituation ?archivalSituation . }
     OPTIONAL {?s ehri:researchExtensive ?researchExtensive . }
     OPTIONAL {?s ehri:researchSummary ?researchSummary . }
+    BIND(IRI(REPLACE(STR(?s), "http://lod.ehri-project-test.eu/countries/", "https://portal.ehri-project.eu/countries/")) AS ?portalLink)
    	FILTER (?s = <$country_id>)
 }
