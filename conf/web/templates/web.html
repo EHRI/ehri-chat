@@ -166,16 +166,12 @@
             flex-wrap: wrap;
         }
 
-        .input-wrapper .chat-input {
-            flex-grow: 3
-        }
-
         .input-wrapper .configuration-options {
             display: flex;
             gap: 0.75rem;
             flex-wrap: wrap;
             align-items: flex-end;
-            flex-grow: 2
+            flex-grow: 2;
         }
 
         .input-wrapper .configuration-options .mode-input {
@@ -187,7 +183,7 @@
         }
 
         .input-wrapper .send-button {
-            flex-grow: 1;
+            flex: 1;
             min-width: 54px;
             min-height: 54px;
         }
@@ -208,7 +204,7 @@
         }
 
         .chat-input {
-            flex: 1;
+            flex: 3 0 50%;
             padding: 0.8rem 1rem;
             border: 1px solid #d1d5db;
             border-radius: 0.75rem;
@@ -494,7 +490,9 @@
                     for (const chunk of chunks) {
                         fullResponse += chunk;
                         const regex = /<p>\s*<\/p>/gi;
-                        assistantContent.innerHTML = DOMPurify.sanitize(marked.parse(fullResponse).replaceAll(regex, ""));
+                        assistantContent.innerHTML = DOMPurify.sanitize(
+                            marked.parse(fullResponse).replaceAll(regex, "")
+                        ).replaceAll("<a", "<a target='_blank'");
                         chatContainer.scrollTop = chatContainer.scrollHeight;
                         // if (line.startsWith('data: ')) {
                         //     try {
