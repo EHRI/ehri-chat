@@ -22,7 +22,7 @@ It exploits the idea of providing additional context to LLMs in order to improve
 1. **Clone the repository:**
    ```bash
    git clone <repository-url>
-   cd ehriChat
+   cd ehri-chat
    ```
 
 2. **Create and activate a virtual environment:**
@@ -51,7 +51,7 @@ The system expects a local LLM endpoint (like Ollama or llama.cpp). By default, 
 ### FAISS Indices
 Before running this tool using the RAG or GraphRAG modes for the first time, you need to generate the vector indices:
 ```bash
-python -m ehri_graph_rag.embeddings.embeddings_manager
+python -m ehri_chat.embeddings.embeddings_manager
 ```
 Indices will be stored under `conf/faiss/`.
 
@@ -60,7 +60,7 @@ Indices will be stored under `conf/faiss/`.
 ### Command Line Interface (CLI)
 Query the system directly from the terminal:
 ```bash
-python -m ehri_graph_rag.main --prompt "Tell me about archives in Poland" --mode GraphRAG --model gemini
+python -m ehri_chat.main --prompt "Tell me about archives in Poland" --mode GraphRAG --model gemini
 ```
 **Modes:** `vanilla`, `RAG`, `GraphRAG`, `MCP`  
 **Models:** `qwen`, `mistral`, `gemini`
@@ -68,7 +68,7 @@ python -m ehri_graph_rag.main --prompt "Tell me about archives in Poland" --mode
 ### Web Server
 Start the Flask server to provide a web interface. When deploying in production, consider using a production-ready server like `gunicorn`.
 ```bash
-flask --app ehri_graph_rag.server run
+flask --app ehri_chat.server run
 ```
 - **Web UI:** Accessible at `http://localhost:5000/`
 
@@ -96,4 +96,3 @@ The database will be automatically created in the first run and stored under `db
 
 ## Limitations
 - Context flooding: Some of the context retrieval methods may incur in a higher consumption of the context limit. The application was designed to minimise this by only inputting the most relevant fields for each entity, trying in this way to reduce redundant data. However, for some specific cases the context can be flooded (especially when using small local LLMs) or the application can have a higher than expected token consumption.
-- No chat history: The chat history is not passed to the model and therefore only the last message is used in the generation. This is enforced in order to avoid flooding the context as explained before and to speed up the generation. However, you can easily change this behaviour in the `server.py` file.

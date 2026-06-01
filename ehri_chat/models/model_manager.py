@@ -1,7 +1,7 @@
 from dataclasses import dataclass
-from ehri_graph_rag.embeddings.embeddings_manager import RagEmbeddingsManager, GraphRagEmbeddingsManager
-from ehri_graph_rag.mcp.client import MCPClient
-from ehri_graph_rag.rag.graphrag_context_manager import GraphRagContextManager
+from ehri_chat.embeddings.embeddings_manager import RagEmbeddingsManager, GraphRagEmbeddingsManager
+from ehri_chat.mcp.client import MCPClient
+from ehri_chat.rag.graphrag_context_manager import GraphRagContextManager
 from mistralai.client import Mistral
 from mistralai.extra.run.context import RunContext
 from mistralai.extra.mcp.sse import MCPClientSSE, SSEServerParams
@@ -13,7 +13,7 @@ from google import genai
 from google.genai import types
 import os
 import logging
-logger = logging.getLogger("ehri_graph_rag")
+logger = logging.getLogger("ehri_chat")
 
 @dataclass
 class LLMGenerationOptions:
