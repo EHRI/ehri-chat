@@ -8,5 +8,5 @@ SELECT * WHERE {
   ?sub a ?type ;
   	rico:name|rico:title ?name ;
 	  ehri:archivalHistory|rico:generalDescription|rico:history|rico:scopeAndContent ?description .	
-  VALUES ?type {ehri:Country ehri:Institution ehri:RecordSet}
+  VALUES ?type {<$type>}
 }

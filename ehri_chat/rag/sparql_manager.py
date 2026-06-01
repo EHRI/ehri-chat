@@ -1,5 +1,7 @@
 from SPARQLWrapper import SPARQLWrapper, JSON
 from dataclasses import dataclass
+import logging
+logger = logging.getLogger("ehri_chat")
 
 class SPARQLManager():
     def __init__(self):
@@ -16,7 +18,8 @@ class SPARQLManager():
 {"Address: " + row["address"]["value"] if "address" in row else ""}
 {"Opening Hours: " + row["openingHours"]["value"] if "openingHours" in row else ""}
 {"City: " + row["city"]["value"] if "city" in row else ""}
-{"Country: " + row["country"]["value"] if "country" in row else ""}"""
+{"Country: " + row["country"]["value"] if "country" in row else ""}
+{"Link EHRI Portal: " + row["portalLink"]["value"] if "portalLink" in row else ""}"""
     
     def generate_chunk_archival_description_from_template(self, row):
         return f"""Archival Description Title: {row["title"]["value"]}
@@ -31,14 +34,15 @@ class SPARQLManager():
 {"Conditions of Access: " + row["conditionsOfAccess"]["value"] if "conditionsOfAccess" in row else ""}
 {"Conditions of Use: " + row["conditionsOfUse"]["value"] if "conditionsOfUse" in row else ""}
 {"History: " + row["history"]["value"] if "history" in row else ""}
-{"Holding Archive: " + row["archiveName"]["value"] if "archiveName" in row else ""}"""
+{"Holding Archive: " + row["archiveName"]["value"] if "archiveName" in row else ""}
+{"Link EHRI Portal: " + row["portalLink"]["value"] if "portalLink" in row else ""}"""
 
 class RagSPARQLManager(SPARQLManager):
     def __init__(self):
         super().__init__()
 
     def load_countries_chunks(self):
-        print("Retrieving countries from SPARQL endpoint...")
+        logger.info("Retrieving countries from SPARQL endpoint...")
         with open("conf/sparql/countries.rq", "r", encoding="utf-8") as f:
             self.ehri_sparql_endpoint.setQuery(f.read())
         result = self.ehri_sparql_endpoint.queryAndConvert()
@@ -46,7 +50,7 @@ class RagSPARQLManager(SPARQLManager):
         return list(map(lambda x: self.overlap_chunks(chunks, x), chunks))
 
     def load_institutions_chunks(self):
-        print("Retrieving institutions from SPARQL endpoint...")
+        logger.info("Retrieving institutions from SPARQL endpoint...")
         with open("conf/sparql/institutions.rq", "r", encoding="utf-8") as f:
             self.ehri_sparql_endpoint.setQuery(f.read())
         result = self.ehri_sparql_endpoint.queryAndConvert()
@@ -54,7 +58,7 @@ class RagSPARQLManager(SPARQLManager):
             yield self.generate_chunk_institution_from_template(row)
             
     def load_archival_descriptions_chunks(self, step, step_size):
-        print("Retrieving archival descriptions from SPARQL endpoint...")
+        logger.info("Retrieving archival descriptions from SPARQL endpoint...")
         with open("conf/sparql/archival_descriptions.rq", "r", encoding="utf-8") as f:
             self.ehri_sparql_endpoint.setQuery(f.read() + " LIMIT " + str(step_size) + " OFFSET " + str(step * step_size))
         result = self.ehri_sparql_endpoint.queryAndConvert()
@@ -74,10 +78,15 @@ class GraphRagSPARQLManager(SPARQLManager):
     def __init__(self):
         super().__init__()
 
-    def load_entities_chunks(self):
-        print("Retrieving entities from SPARQL endpoint...")
+    def load_entities_chunks(self, type):
+        logger.info(f"Retrieving entities for type {type} from SPARQL endpoint...")
+        kg_types = {
+            "countries": "ehri:Country",
+            "institutions": "ehri:Institution",
+            "archival_descriptions": "ehri:RecordSet",
+        }
         with open("conf/sparql/entities_for_embedding.rq", "r", encoding="utf-8") as f:
-            self.ehri_sparql_endpoint.setQuery(f.read())
+            self.ehri_sparql_endpoint.setQuery(f.read().replace("<$type>", kg_types.get(type, "")))
         result = self.ehri_sparql_endpoint.queryAndConvert()
         return [Entity(row["sub"]["value"], 
                 row["type"]["value"], 
@@ -94,13 +103,13 @@ class GraphRagSPARQLManager(SPARQLManager):
 {"Archival Situation:" + result["archivalSituation"]["value"] if "archivalSituation" in result else ""}
 {"EHRI Research Summary:" + result["researchSummary"]["value"] if "researchSummary" in result else ""}
 {"EHRI Research Extended:" + result["researchExtensive"]["value"] if "researchExtensive" in result else ""}
-{"More information on the EHRI Portal: " + country_uri.replace("http://lod.ehri-project-test.eu/countries/", "https://portal.ehri-project.eu/countries/")}"""
+{"Link EHRI Portal: " + result["portalLink"]["value"] if "portalLink" in result else ""}"""
 
         with open("conf/sparql/countries_linked_institutions.rq", "r", encoding="utf-8") as f:
             self.ehri_sparql_endpoint.setQuery(f.read().replace("$country_id", country_uri))
         results = self.ehri_sparql_endpoint.queryAndConvert()["results"]["bindings"]
         country_linked_institutions = [f"""Name: {row["institutionName"]["value"]}
-More information on the EHRI Portal: {row["institution"]["value"].replace("http://lod.ehri-project-test.eu/institutions/", "https://portal.ehri-project.eu/institutions/")}""" 
+{"Link EHRI Portal: " + row["portalLink"]["value"] if "portalLink" in result else ""}"""
             for row in results]
         
         return ("Country context:" + country_context
@@ -117,7 +126,7 @@ More information on the EHRI Portal: {row["institution"]["value"].replace("http:
             self.ehri_sparql_endpoint.setQuery(f.read().replace("$institution_id", institution_uri))
         results = self.ehri_sparql_endpoint.queryAndConvert()["results"]["bindings"]
         institutions_linked_archival_descriptions = [f"""Name: {row["archivalDescriptionTitle"]["value"]}
-More information on the EHRI Portal: {row["archivalDescription"]["value"].replace("http://lod.ehri-project-test.eu/units/", "https://portal.ehri-project.eu/units/")}""" 
+{"Link EHRI Portal: " + row["portalLink"]["value"] if "portalLink" in result else ""}"""
             for row in results]
         
         return ("Institution context:" + institution_context
@@ -135,7 +144,7 @@ More information on the EHRI Portal: {row["archivalDescription"]["value"].replac
         results = self.ehri_sparql_endpoint.queryAndConvert()["results"]["bindings"]
         archival_description_copies_and_originals = [f"""{"Name:" + row["copyName"]["value"] if "copyName" in row else row["originalName"]["value"]}
 {"Type:" + "copy" if "copyName" in row else "original"}
-{"More information on the EHRI Portal:" + ("copy" if "copyName" in row else "original").replace("http://lod.ehri-project-test.eu/units/", "https://portal.ehri-project.eu/units/")}""" 
+{"Link EHRI Portal:" + ("copy" if "copyName" in row else "original").replace("http://lod.ehri-project-test.eu/units/", "https://portal.ehri-project.eu/units/")}"""
             for row in results]
         
         return ("Archival description context:" + archival_description_context

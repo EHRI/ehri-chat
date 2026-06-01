@@ -220,3 +220,8 @@ __marimo__/
 
 # Faiss
 conf/faiss/*
+
+PyCharm
+.idea
+
+db/*.db

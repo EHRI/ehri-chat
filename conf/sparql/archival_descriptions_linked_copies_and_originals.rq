@@ -6,13 +6,23 @@ SELECT * WHERE {
     {
         ?s a ehri:RecordSet ;
             ehri:hasCopy ?copy .
-        ?copy rico:name ?copyName .
+        ?copy rico:name|rico:title ?copyName .
+        BIND(IRI(
+            IF(STRSTARTS(STR(?copy), "http://lod.ehri-project-test.eu/institutions/"),
+                REPLACE(STR(?copy), "http://lod.ehri-project-test.eu/institutions/", "https://portal.ehri-project.eu/institutions/"),
+                REPLACE(STR(?copy), "http://lod.ehri-project-test.eu/units/", "https://portal.ehri-project.eu/units/")
+               )) AS ?portalLink)
     }
     UNION
     {
         ?s a ehri:RecordSet ;
             ehri:isCopyOf ?original .
-        ?original rico:name ?originalName .
+        ?original rico:name|rico:title ?originalName .
+        BIND(IRI(
+            IF(STRSTARTS(STR(?original), "http://lod.ehri-project-test.eu/institutions/"),
+                REPLACE(STR(?original), "http://lod.ehri-project-test.eu/institutions/", "https://portal.ehri-project.eu/institutions/"),
+                REPLACE(STR(?original), "http://lod.ehri-project-test.eu/units/", "https://portal.ehri-project.eu/units/")
+               )) AS ?portalLink)
     }
     FILTER (?s = <$archival_description_id>)
-}
+} LIMIT 10

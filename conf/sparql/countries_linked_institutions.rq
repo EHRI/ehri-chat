@@ -6,5 +6,6 @@ SELECT * WHERE {
     ?s a ehri:Country ;
         rico:isOrWasLocationOfAgent ?institution .
     ?institution rico:name ?institutionName .
+    BIND(IRI(REPLACE(STR(?institution), "http://lod.ehri-project-test.eu/institutions/", "https://portal.ehri-project.eu/institutions/")) AS ?portalLink)
     FILTER (?s = <$country_id>)
-}
+} LIMIT 10

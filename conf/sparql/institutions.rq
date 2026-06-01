@@ -18,4 +18,5 @@ SELECT * WHERE {
         a ehri:City ;
         rico:name ?city
     ] }
+    BIND(IRI(REPLACE(STR(?s), "http://lod.ehri-project-test.eu/institutions/", "https://portal.ehri-project.eu/institutions/")) AS ?portalLink)
 }

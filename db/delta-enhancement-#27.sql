@@ -1,0 +1,2 @@
+ALTER TABLE activity ADD COLUMN temperature REAL;
+ALTER TABLE activity ADD COLUMN top_k INTEGER;
