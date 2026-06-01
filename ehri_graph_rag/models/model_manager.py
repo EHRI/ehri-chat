@@ -6,7 +6,7 @@ from mistralai.client import Mistral
 from mistralai.extra.run.context import RunContext
 from mistralai.extra.mcp.sse import MCPClientSSE, SSEServerParams
 from mistralai.extra.run.result import RunResult
-from datetime import datetime
+from datetime import datetime, timedelta
 import http.client
 import json
 from google import genai
@@ -25,7 +25,7 @@ class LLMGenerationOptions:
 class LLModel:
     def __init__(self):
         self.today = datetime.today()
-        self.yesterday = datetime(self.today.year, self.today.month, self.today.day - 1)
+        self.yesterday = self.today - timedelta(days=1)
 
     def generate_rag_system_prompt(self):
         return f"""You are a Large Language Model (LLM).
@@ -250,6 +250,7 @@ class LlamaCpp(LLModel):
         conn = http.client.HTTPConnection(self.endpoint)
         headers = {'Content-type': 'application/json'}
         dict_initial_data = {
+            "model": generation_options.model if generation_options.model is not None else "qwen3-vl:2b-instruct-q4_K_M",
             "messages": self.generate_messages(user_prompt, history = history, mcp = mcp is not None),
             "stream": True,
             "options": {
@@ -258,8 +259,6 @@ class LlamaCpp(LLModel):
                 "num_predict": generation_options.max_tokens
             }
         }
-        if generation_options.model is not None:
-            dict_initial_data['model'] = generation_options.model
         if mcp:
             await mcp.connect()
             tools = mcp.mcp_tools_to_openai(await mcp.get_tools())
