@@ -1,14 +1,14 @@
 from typing import Generator, Any
 from flask import Flask, request, Response, jsonify, render_template
-from ehri_graph_rag.database.database_manager import DatabaseManager, ActivityRecord
-from ehri_graph_rag.models.model_manager import LlamaCpp, MistralAPI, GeminiAPI, LLMGenerationOptions
+from ehri_chat.database.database_manager import DatabaseManager, ActivityRecord
+from ehri_chat.models.model_manager import LlamaCpp, MistralAPI, GeminiAPI, LLMGenerationOptions
 import asyncio
 import logging
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 app = Flask(__name__, template_folder="../conf/web/templates")
-logging.getLogger("ehri_graph_rag").setLevel(logging.WARN)
+logging.getLogger("ehri_chat").setLevel(logging.WARN)
 logging.basicConfig(level=logging.WARN)
 
 @app.route("/chat/completions", methods=["POST"])

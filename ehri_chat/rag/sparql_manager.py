@@ -1,7 +1,7 @@
 from SPARQLWrapper import SPARQLWrapper, JSON
 from dataclasses import dataclass
 import logging
-logger = logging.getLogger("ehri_graph_rag")
+logger = logging.getLogger("ehri_chat")
 
 class SPARQLManager():
     def __init__(self):

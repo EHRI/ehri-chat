@@ -1,4 +1,4 @@
-from ehri_graph_rag.models.model_manager import LlamaCpp, MistralAPI, GeminiAPI, LLMGenerationOptions
+from ehri_chat.models.model_manager import LlamaCpp, MistralAPI, GeminiAPI, LLMGenerationOptions
 import asyncio
 import click
 import logging
@@ -52,7 +52,7 @@ class ModelLoader:
               required=False,
               default=2048,
               show_default=True)
-def ehri_graph_rag(prompt, model, mode, temperature, top_k, max_tokens):
+def ehri_chat(prompt, model, mode, temperature, top_k, max_tokens):
     generation_options = LLMGenerationOptions(
         model=None,# for now the model is not passed as we make use of a simplistic referencing method in the CLI
         temperature=temperature,
@@ -76,5 +76,5 @@ async def run(prompt, model, mode, generation_options: LLMGenerationOptions = LL
         print(chunk, end="", flush=True)
 
 if __name__ == "__main__":
-    logging.getLogger("ehri_graph_rag").setLevel(logging.WARN)
-    ehri_graph_rag()
+    logging.getLogger("ehri_chat").setLevel(logging.WARN)
+    ehri_chat()

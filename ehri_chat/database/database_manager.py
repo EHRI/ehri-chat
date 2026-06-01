@@ -2,7 +2,7 @@ import os.path
 import sqlite3
 from dataclasses import dataclass
 import logging
-logger = logging.getLogger("ehri_graph_rag")
+logger = logging.getLogger("ehri_chat")
 
 @dataclass
 class ActivityRecord:

@@ -1,12 +1,12 @@
 from sentence_transformers import SentenceTransformer
-from ehri_graph_rag.rag.sparql_manager import RagSPARQLManager, GraphRagSPARQLManager, Entity
+from ehri_chat.rag.sparql_manager import RagSPARQLManager, GraphRagSPARQLManager, Entity
 import faiss
 import numpy as np
 import json
 import os
 import time
 import logging
-logger = logging.getLogger("ehri_graph_rag")
+logger = logging.getLogger("ehri_chat")
 
 class SentenceTransformerSingletonAdapter:
     instance = None

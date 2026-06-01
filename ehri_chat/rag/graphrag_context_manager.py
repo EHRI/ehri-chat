@@ -1,7 +1,7 @@
-from ehri_graph_rag.rag.sparql_manager import GraphRagSPARQLManager
-from ehri_graph_rag.embeddings.embeddings_manager import GraphRagEmbeddingsManager
+from ehri_chat.rag.sparql_manager import GraphRagSPARQLManager
+from ehri_chat.embeddings.embeddings_manager import GraphRagEmbeddingsManager
 import logging
-logger = logging.getLogger("ehri_graph_rag")
+logger = logging.getLogger("ehri_chat")
 
 class GraphRagContextManager:
     def __init__(self):
