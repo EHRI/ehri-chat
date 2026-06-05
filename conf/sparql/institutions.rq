@@ -14,7 +14,7 @@ SELECT * WHERE {
     OPTIONAL { ?s ^rico:isOrWasLocationOfAgent/rico:name ?country . }
     OPTIONAL { ?s schema:openingHours ?openingHours . }
     OPTIONAL { ?s rico:agentHasOrHadLocation/rico:hasOrHadPhysicalLocation/rico:name ?name . }
-    OPTIONAL { ?s rico:agentHasOrHadLocation/rico:isOrWasContainedBy [
+    OPTIONAL { ?s rico:agentHasOrHadLocation/rico:isContainedByTransitive* [
         a ehri:City ;
         rico:name ?city
     ] }

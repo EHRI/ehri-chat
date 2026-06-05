@@ -5,8 +5,10 @@ PREFIX rico: <https://www.ica.org/standards/RiC/ontology#>
 SELECT * WHERE {
     {
         ?s a ehri:RecordSet ;
-            ehri:hasCopy ?copy .
-        ?copy rico:name|rico:title ?copyName .
+            rico:thingIsSourceOfRelation ?copyRelation .
+        ?copyRelation a ehri:HasCopyRelation .
+        ?copy rico:thingIsTargetOfRelation ?copyRelation ;
+            rico:name|rico:title ?copyName .
         BIND(IRI(
             IF(STRSTARTS(STR(?copy), "http://lod.ehri-project-test.eu/institutions/"),
                 REPLACE(STR(?copy), "http://lod.ehri-project-test.eu/institutions/", "https://portal.ehri-project.eu/institutions/"),
@@ -16,8 +18,10 @@ SELECT * WHERE {
     UNION
     {
         ?s a ehri:RecordSet ;
-            ehri:isCopyOf ?original .
-        ?original rico:name|rico:title ?originalName .
+            rico:thingIsTargetOfRelation ?originalRelation .
+        ?originalRelation a ehri:IsCopyOfRelation .
+        ?original rico:thingIsTargetOfRelation ?originalRelation ;
+            rico:name|rico:title ?originalName .
         BIND(IRI(
             IF(STRSTARTS(STR(?original), "http://lod.ehri-project-test.eu/institutions/"),
                 REPLACE(STR(?original), "http://lod.ehri-project-test.eu/institutions/", "https://portal.ehri-project.eu/institutions/"),

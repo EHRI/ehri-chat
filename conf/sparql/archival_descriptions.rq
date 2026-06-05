@@ -10,13 +10,14 @@ SELECT * WHERE {
     OPTIONAL { ?s rico:recordResourceExtent ?recordResourceExtent . }
     OPTIONAL { ?s rico:recordResourceStructure ?recordResourceStructure . }
     OPTIONAL { ?s rico:date ?dates . }
-    OPTIONAL { ?s rico:hasBeginningDate ?beginningDate . }
-    OPTIONAL { ?s rico:hasEndDate ?endDate . }
+    OPTIONAL { ?s rico:hasBeginningDate/rico:normalizedDateValue ?beginningDate . }
+    OPTIONAL { ?s rico:hasEndDate/rico:normalizedDateValue ?endDate . }
     OPTIONAL { ?s ehri:generalContext ?generalContext . }
     OPTIONAL { ?s rdfs:seeAlso ?website . }
     OPTIONAL { ?s rico:conditionsOfAccess ?conditionsOfAccess . }
     OPTIONAL { ?s rico:conditionsOfUse ?conditionsOfUse . }
-    OPTIONAL { ?s rico:history ?history . }
+    OPTIONAL { ?s ehri:biographicalHistory ?biographicalHistory . }
+    OPTIONAL { ?s ehri:archivalHistory ?archivalHistory . }
     OPTIONAL { ?s rico:hasOrHadHolder/rico:name ?archiveName . }
     BIND(IRI(REPLACE(STR(?s), "http://lod.ehri-project-test.eu/units/", "https://portal.ehri-project.eu/units/")) AS ?portalLink)
 } ORDER BY ?title

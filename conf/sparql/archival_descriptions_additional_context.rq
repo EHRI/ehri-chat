@@ -16,7 +16,8 @@ SELECT * WHERE {
     OPTIONAL { ?s rdfs:seeAlso ?website . }
     OPTIONAL { ?s rico:conditionsOfAccess ?conditionsOfAccess . }
     OPTIONAL { ?s rico:conditionsOfUse ?conditionsOfUse . }
-    OPTIONAL { ?s rico:history ?history . }
+    OPTIONAL { ?s ehri:biographicalHistory ?biographicalHistory . }
+    OPTIONAL { ?s ehri:archivalHistory ?archivalHistory . }
     OPTIONAL { ?s rico:hasOrHadHolder/rico:name ?archiveName . }
     BIND(IRI(REPLACE(STR(?s), "http://lod.ehri-project-test.eu/units/", "https://portal.ehri-project.eu/units/")) AS ?portalLink)
     FILTER (?s = <$archival_description_id>)

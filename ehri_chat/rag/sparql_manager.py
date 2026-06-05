@@ -33,7 +33,8 @@ class SPARQLManager():
 {"Website: " + row["website"]["value"] if "website" in row else ""}
 {"Conditions of Access: " + row["conditionsOfAccess"]["value"] if "conditionsOfAccess" in row else ""}
 {"Conditions of Use: " + row["conditionsOfUse"]["value"] if "conditionsOfUse" in row else ""}
-{"History: " + row["history"]["value"] if "history" in row else ""}
+{"Biographical History: " + row["biographicalHistory"]["value"] if "biographicalHistory" in row else ""}
+{"Archival History: " + row["archivalHistory"]["value"] if "archivalHistory" in row else ""}
 {"Holding Archive: " + row["archiveName"]["value"] if "archiveName" in row else ""}
 {"Link EHRI Portal: " + row["portalLink"]["value"] if "portalLink" in row else ""}"""
 

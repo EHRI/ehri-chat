@@ -7,6 +7,6 @@ PREFIX schema: <http://schema.org/>
 SELECT * WHERE {
   ?sub a ?type ;
   	rico:name|rico:title ?name ;
-	  ehri:archivalHistory|rico:generalDescription|rico:history|rico:scopeAndContent ?description .	
+	  ehri:archivalHistory|ehri:biographicalHistory|rico:generalDescription|rico:history|rico:scopeAndContent ?description .
   VALUES ?type {<$type>}
 }
