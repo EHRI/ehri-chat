@@ -17,10 +17,17 @@ logger = logging.getLogger("ehri_chat")
 
 @dataclass
 class LLMGenerationOptions:
-    model: str = None,
+    model: str = None
     temperature: float = 0.1
-    top_k: int = 20,
+    top_k: int = 20
     max_tokens: int = 2048
+
+@dataclass
+class Evaluation:
+    relevant_context: str = ""
+    generated_response: str = ""
+    input_tokens: int = 0
+    output_tokens: int = 0
 
 class LLModel:
     def __init__(self):
@@ -77,25 +84,29 @@ Query: {user_prompt}
 Answer:
 """
 
-    async def get_results_llm_with_rag(self, user_prompt: str, history: list = None, generation_options: LLMGenerationOptions = LLMGenerationOptions()):
+    async def get_results_llm_with_rag(self, user_prompt: str, history: list = None, generation_options: LLMGenerationOptions = LLMGenerationOptions(), evaluation: Evaluation = None):
         relevant_context = "\n\n".join(RagEmbeddingsManager().retrieve_relevant_chunks(user_prompt))
         prompt_with_context = self.generate_rag_prompt(user_prompt, relevant_context)
-        return await self.get_results_llm(prompt_with_context, history = history, generation_options = generation_options)
+        if evaluation is not None:
+            evaluation.relevant_context = relevant_context
+        return await self.get_results_llm(prompt_with_context, history = history, generation_options = generation_options, evaluation = evaluation)
 
-    async def get_results_llm_with_graphrag(self, user_prompt, history: list = None, generation_options: LLMGenerationOptions = LLMGenerationOptions()):
+    async def get_results_llm_with_graphrag(self, user_prompt, history: list = None, generation_options: LLMGenerationOptions = LLMGenerationOptions(), evaluation: Evaluation = None):
         relevant_context = "\n\n".join(GraphRagContextManager().retrieve_relevant_context(user_prompt))
         prompt_with_context = self.generate_rag_prompt(user_prompt, relevant_context)
-        return await self.get_results_llm(prompt_with_context, history = history, generation_options = generation_options)
+        if evaluation is not None:
+            evaluation.relevant_context = relevant_context
+        return await self.get_results_llm(prompt_with_context, history = history, generation_options = generation_options, evaluation = evaluation)
 
-    async def get_results_llm_with_mcp(self, user_prompt, history: list = None, generation_options: LLMGenerationOptions = LLMGenerationOptions()):
-        return await self.get_results_llm(user_prompt, history = history, mcp = MCPClient(), generation_options = generation_options)
+    async def get_results_llm_with_mcp(self, user_prompt, history: list = None, generation_options: LLMGenerationOptions = LLMGenerationOptions(), evaluation: Evaluation = None):
+        return await self.get_results_llm(user_prompt, history = history, mcp = MCPClient(), generation_options = generation_options, evaluation = evaluation)
     
 class MistralAPI(LLModel):
     def __init__(self):
         super().__init__()
         self.client = Mistral(api_key=os.getenv("MISTRAL_API_KEY", ""))
 
-    async def get_results_llm(self, user_prompt, history: list = None, mcp = None, generation_options: LLMGenerationOptions = LLMGenerationOptions()):
+    async def get_results_llm(self, user_prompt, history: list = None, mcp = None, generation_options: LLMGenerationOptions = LLMGenerationOptions(), evaluation: Evaluation = None):
         logger.debug(f"Generated prompt: {user_prompt}")
             # This is not yet supported for streamable http MCP servers
             # if mcp:
@@ -147,6 +158,9 @@ class MistralAPI(LLModel):
                         )
                     async for chunk in response:
                         finish_reason = chunk.data.choices[0].finish_reason
+                        if chunk.data.usage is not None and evaluation is not None:
+                            evaluation.input_tokens += chunk.data.usage.prompt_tokens
+                            evaluation.output_tokens += chunk.data.usage.completion_tokens
                         if finish_reason not in ["tool_content", None, "tool_calls"]:
                             agent_loop = False
                         if chunk.data.choices[0].delta.tool_calls is not None and chunk.data.choices[0].delta.tool_calls:
@@ -163,6 +177,8 @@ class MistralAPI(LLModel):
                                 })
                                 logger.debug(f"  → calling tool {tc.function.name}({args})")
                                 tool_result = await mcp.call_mcp_tool(tc.function.name, args)
+                                if evaluation is not None:
+                                    evaluation.relevant_context += tool_result
                                 tools_results.append({
                                     "role": "tool",
                                     "name": tc.function.name,
@@ -189,7 +205,7 @@ class GeminiAPI(LLModel):
     def __init__(self):
         super().__init__()
 
-    async def get_results_llm(self, user_prompt, mcp = None, history: list = None, generation_options: LLMGenerationOptions = LLMGenerationOptions()):
+    async def get_results_llm(self, user_prompt, mcp = None, history: list = None, generation_options: LLMGenerationOptions = LLMGenerationOptions(), evaluation: Evaluation = None):
         client = genai.Client(
             api_key=os.environ.get("GEMINI_API_KEY"),
         )
@@ -232,6 +248,15 @@ class GeminiAPI(LLModel):
                         contents=contents,
                         config=generate_content_config,
                 ):
+                    if chunk.usage_metadata and evaluation is not None:
+                        evaluation.input_tokens = chunk.usage_metadata.prompt_token_count
+                        evaluation.output_tokens = chunk.usage_metadata.total_token_count - chunk.usage_metadata.prompt_token_count
+                    if evaluation is not None:
+                        for candidate in chunk.candidates:
+                            for part in candidate.content.parts:
+                                if part.function_call is not None:
+                                    tool_response = await mcp.call_mcp_tool(part.function_call.name, part.function_call.args)
+                                    evaluation.relevant_context += tool_response
                     yield chunk.text
             finally:
                 if mcp:
@@ -244,7 +269,7 @@ class LlamaCpp(LLModel):
         self.endpoint = "localhost:11434"
         self.path = "/v1/chat/completions"
 
-    async def get_results_llm(self, user_prompt, mcp = None, history: list = None, generation_options: LLMGenerationOptions = LLMGenerationOptions()):
+    async def get_results_llm(self, user_prompt, mcp = None, history: list = None, generation_options: LLMGenerationOptions = LLMGenerationOptions(), evaluation: Evaluation = None):
         tools = None
         logger.debug(f"Generated prompt: {user_prompt}")
         conn = http.client.HTTPConnection(self.endpoint)
