@@ -1,0 +1,11 @@
+model,mode,query,CR,AR,G,tokens in,tokens out
+gemini,rag,situation_belgium,3,3,3,1281,378
+gemini,rag,roma_fate_france,1,3,3,957,44
+gemini,rag,comparison_countries,2,2,3,2319,167
+gemini,rag,listing_institutions,3,3,3,1236,269
+gemini,rag,museums_holocaust,2,2,3,1062,38
+gemini,rag,camps_with_archive_germany,2,2,3,924,61
+gemini,rag,deportations_antwerp,3,3,3,985,75
+gemini,rag,raids_amsterdam,2,2,3,1484,209
+gemini,rag,visas_countries,2,2,3,943,131
+gemini,rag,person_information,3,3,3,2331,732

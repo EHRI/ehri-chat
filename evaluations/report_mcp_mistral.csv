@@ -1,0 +1,11 @@
+model,mode,query,CR,AR,G,tokens in,tokens out
+mistral,mcp,situation_belgium,3,3,3,8913,1992
+mistral,mcp,roma_fate_france,1,3,2,7020,655
+mistral,mcp,comparison_countries,1,3,1,18642,1564
+mistral,mcp,listing_institutions,3,3,2,41338,744
+mistral,mcp,museums_holocaust,2,3,3,26304,1140
+mistral,mcp,camps_with_archive_germany,0,1,3,54525,2026
+mistral,mcp,deportations_antwerp,3,3,3,12832,517
+mistral,mcp,raids_amsterdam,1,2,3,7474,224
+mistral,mcp,visas_countries,3,3,3,8913,710
+mistral,mcp,person_information,3,3,3,10402,1590
