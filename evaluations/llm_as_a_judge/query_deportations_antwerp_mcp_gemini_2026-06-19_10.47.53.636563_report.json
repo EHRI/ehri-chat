@@ -1,0 +1,14 @@
+{
+  "context_relevance": {
+    "explanation": "The retrieved context provides links to a 'Jewish Registry of Antwerp' and a general term 'Deportations.' While the 'Jewish Registry of Antwerp' is somewhat relevant to the query about Jews in Antwerp, it does not explicitly address deportations. The 'Deportations' term is too general and does not specifically connect to the deportations of Jews in Antwerp. Thus, the context only partially aligns with the user's query and lacks specificity.",
+    "score": "1"
+  },
+  "answer_relevance": {
+    "explanation": "The generated answer acknowledges the user's query about deportations of Jews in Antwerp but only provides indirect references (a Jewish registry and a general deportations term). It does not directly address the deportations of Jews in Antwerp or provide specific information about this topic. The answer is somewhat helpful but lacks depth and specificity regarding the query.",
+    "score": "1"
+  },
+  "groundedness": {
+    "explanation": "The generated answer is grounded in the retrieved context, as it directly references the provided links to the 'Jewish Registry of Antwerp' and the general 'Deportations' term. However, since the context itself is not highly relevant or specific to the query, the answer's faithfulness to the context does not significantly improve its quality. The answer accurately reflects the limited information in the context.",
+    "score": "2"
+  }
+}

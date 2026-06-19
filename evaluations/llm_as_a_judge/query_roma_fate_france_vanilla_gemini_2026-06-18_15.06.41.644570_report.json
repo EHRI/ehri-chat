@@ -1,0 +1,14 @@
+{
+  "context_relevance": {
+    "explanation": "The retrieved context does not provide any specific information about the fate of Roma in France during the Holocaust. Instead, it mentions the EHRI Portal and its general focus on Holocaust-related archival collections. Since the context fails to address the query directly, it is not relevant to the user's question.",
+    "score": "0"
+  },
+  "answer_relevance": {
+    "explanation": "The generated answer acknowledges the lack of specific information about the fate of Roma in France during the Holocaust, which aligns with the absence of relevant details in the retrieved context. However, the answer does not address the user's query directly and instead redirects them to the EHRI Portal for further exploration. While the response is honest, it is not helpful in providing the requested information, resulting in low relevance to the query.",
+    "score": "1"
+  },
+  "groundedness": {
+    "explanation": "The generated answer is fully grounded in the retrieved context. It accurately reflects the lack of specific information in the context and suggests an alternative resource (the EHRI Portal) for further exploration, which is mentioned in the context. There are no factual inaccuracies or unsupported claims in the answer.",
+    "score": "3"
+  }
+}

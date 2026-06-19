@@ -1,0 +1,14 @@
+{
+  "context_relevance": {
+    "explanation": "The retrieved context directly addresses the query about Belgium's situation during the Holocaust. It provides detailed information on the German invasion, occupation, anti-Jewish legislation, deportations, and the targeting of Sinti and Roma. The context is highly relevant and comprehensive, covering key aspects of the Holocaust in Belgium.",
+    "score": "3"
+  },
+  "answer_relevance": {
+    "explanation": "The generated answer is a concise and accurate summary of the retrieved context. It covers the invasion, occupation, anti-Jewish measures, deportations, and the targeting of Sinti and Roma. The answer directly addresses the query and provides a clear and relevant overview of Belgium's situation during the Holocaust.",
+    "score": "3"
+  },
+  "groundedness": {
+    "explanation": "The generated answer is fully grounded in the retrieved context. It accurately reflects the key details, such as dates, numbers of deported individuals, and specific events like the introduction of anti-Jewish legislation and the role of the Dossin barracks. There are no inaccuracies or unsupported claims in the answer.",
+    "score": "3"
+  }
+}

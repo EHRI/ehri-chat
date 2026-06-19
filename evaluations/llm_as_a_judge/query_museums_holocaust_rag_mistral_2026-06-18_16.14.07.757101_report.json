@@ -1,0 +1,14 @@
+{
+  "context_relevance": {
+    "explanation": "The retrieved context provides detailed archival descriptions related to Holocaust victims and documentation in the Netherlands. It mentions key institutions such as the NIOD Institute for War, Holocaust and Genocide Studies, the Jewish Historical Museum in Amsterdam, and the Amsterdam City Archives, which are directly relevant to the query about locating Holocaust museums in the Netherlands. However, the context is heavily focused on archival collections rather than explicitly listing museums. While it does mention museums indirectly (e.g., Jewish Historical Museum), it could be more explicit about physical museum locations.",
+    "score": "2"
+  },
+  "answer_relevance": {
+    "explanation": "The generated answer directly addresses the user's query by listing specific institutions in the Netherlands that hold Holocaust-related collections, including the NIOD Institute, Jewish Historical Museum, and Amsterdam City Archives. It provides actionable information (e.g., websites) and aligns well with the user's intent to locate Holocaust museums or related institutions. The answer is helpful and on-point.",
+    "score": "3"
+  },
+  "groundedness": {
+    "explanation": "The generated answer is well-grounded in the retrieved context. It accurately extracts and summarizes the key institutions mentioned in the context (NIOD, Jewish Historical Museum, Amsterdam City Archives) and even includes additional helpful details like website links. The answer does not introduce unsupported information or misrepresent the context.",
+    "score": "3"
+  }
+}

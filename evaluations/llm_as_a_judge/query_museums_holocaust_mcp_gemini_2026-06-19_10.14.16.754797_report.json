@@ -1,0 +1,14 @@
+{
+  "context_relevance": {
+    "explanation": "The retrieved context includes a list of institutions in the Netherlands that are directly related to the Holocaust, war studies, resistance, and Jewish history. These institutions are highly relevant to the query, which asks specifically about museums for the Holocaust in the Netherlands. The context provides a comprehensive set of options that align well with the user's intent.",
+    "score": "3"
+  },
+  "answer_relevance": {
+    "explanation": "The generated answer directly addresses the user's query by listing museums and institutions in the Netherlands that are related to the Holocaust. It provides specific names, brief descriptions, and links to the institutions, which is highly relevant and helpful. The answer also proactively asks if the user is looking for a specific city or type of institution, which adds value by refining the response further.",
+    "score": "3"
+  },
+  "groundedness": {
+    "explanation": "The generated answer is fully grounded in the retrieved context. All the institutions listed in the answer are present in the context, and the answer does not introduce any external or unsupported information. The links provided in the answer also match those in the context, ensuring factual accuracy and reliability.",
+    "score": "3"
+  }
+}

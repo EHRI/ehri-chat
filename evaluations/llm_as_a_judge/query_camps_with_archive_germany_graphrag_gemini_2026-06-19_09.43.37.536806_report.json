@@ -1,0 +1,14 @@
+{
+  "context_relevance": {
+    "explanation": "The query asks for camp sites in Germany that currently hold an archive within their premises. The retrieved context includes several institutions, but only two are located in Germany: the Gedenkstätte und Museum Sachsenhausen-Archiv in Oranienburg and the Landesarchiv Thüringen - Hauptstaatsarchiv Weimar. The Sachsenhausen archive is directly related to a former concentration camp and holds relevant archival material. The Landesarchiv Thüringen, while not exclusively a camp site, holds records related to Buchenwald concentration camp. The other institutions listed are in Poland, France, and Austria, which are not relevant to the query's geographic focus on Germany.",
+    "score": "2"
+  },
+  "answer_relevance": {
+    "explanation": "The generated answer correctly identifies the Gedenkstätte und Museum Sachsenhausen-Archiv in Oranienburg and the Landesarchiv Thüringen - Hauptstaatsarchiv Weimar as institutions in Germany that hold archives related to camp sites. However, the answer could be more precise by explicitly stating that only Sachsenhausen is a camp site with an archive, while the Landesarchiv Thüringen is a state archive holding relevant records but is not itself a camp site. This slight ambiguity reduces the score.",
+    "score": "2"
+  },
+  "groundedness": {
+    "explanation": "The generated answer is grounded in the retrieved context, as it directly references the Gedenkstätte und Museum Sachsenhausen-Archiv and the Landesarchiv Thüringen - Hauptstaatsarchiv Weimar, both of which are mentioned in the context. The information provided aligns with the details given about these institutions, including their locations and the nature of their archival holdings.",
+    "score": "3"
+  }
+}

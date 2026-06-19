@@ -1,0 +1,14 @@
+{
+  "context_relevance": {
+    "explanation": "The query specifically asks for archival material relating to raids in Amsterdam. The retrieved context includes several highly relevant sources:\n1. **NIOD Instituut voor Oorlogs-, Holocaust- en Genocidestudies**: This institution holds extensive records on the German occupation of the Netherlands, including raids, persecution, and resistance activities. The context explicitly mentions records relating to raids and Gestapo activities in Amsterdam, which directly aligns with the query.\n2. **Stadsarchief Amsterdam**: The Amsterdam City Archives holds municipal records, including police reports and documents on raids during WWII. The context mentions records relating to Jews in Amsterdam, including police collaboration in deportations, which is closely related to raids.\n3. **Yad Vashem Archives and Nationaal Archief**: These institutions also provide relevant archival descriptions, such as reports on raids, deportations, and Nazi actions in Amsterdam.\n\nThe context is highly relevant as it directly addresses the query by pointing to specific institutions and collections that contain archival material on raids in Amsterdam.",
+    "score": "3"
+  },
+  "answer_relevance": {
+    "explanation": "The generated answer directly addresses the user's query by identifying and summarizing archival materials related to raids in Amsterdam. It provides:\n1. **Specific institutions** (NIOD, Stadsarchief Amsterdam, Yad Vashem, Nationaal Archief) that hold relevant records.\n2. **Detailed descriptions** of collections that include information on raids, such as police records, Gestapo activities, and deportations.\n3. **Links and access information** for further exploration, including search engines and opening hours.\n4. **Key themes** to explore, such as police raids and Jewish persecution, which align with the user's intent.\n\nThe answer is highly relevant, helpful, and on-point, providing actionable insights and resources for locating the requested archival material.",
+    "score": "3"
+  },
+  "groundedness": {
+    "explanation": "The generated answer is fully grounded in the retrieved context. It:\n1. **Accurately cites specific institutions and collections** mentioned in the context, such as NIOD's records on raids and Gestapo activities, Stadsarchief Amsterdam's police records, and Yad Vashem's territorial collection.\n2. **Directly references the scope and content** of the archival descriptions provided in the context, ensuring factual accuracy.\n3. **Provides links and access details** that are explicitly mentioned in the context, such as search engines and opening hours.\n4. **Does not introduce any unsupported or external information**, relying solely on the provided context for its claims.\n\nThe answer is highly faithful to the retrieved context and maintains a strong connection to the source material.",
+    "score": "3"
+  }
+}

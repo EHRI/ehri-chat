@@ -1,0 +1,14 @@
+{
+  "context_relevance": {
+    "explanation": "The retrieved context is highly relevant to the query. It directly addresses the fate of Roma in France during the Holocaust, covering key aspects such as persecution, internment camps, deportations, and post-war recognition. The context provides a comprehensive overview of the historical events and policies affecting the Roma population in France during this period.",
+    "score": "3"
+  },
+  "answer_relevance": {
+    "explanation": "The generated answer is highly relevant to the query. It thoroughly addresses the fate of Roma in France during the Holocaust, aligning well with the user's intent. The answer provides detailed insights into persecution, internment, deportation, and post-war recognition, offering a well-rounded and informative response.",
+    "score": "3"
+  },
+  "groundedness": {
+    "explanation": "The generated answer is highly faithful to the retrieved context. It accurately reflects the information provided in the context, covering all major points such as the establishment of internment camps, deportations to Auschwitz, the role of the Vichy regime, and post-war neglect. The answer does not introduce any unsupported claims or deviations from the context.",
+    "score": "3"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "context_relevance": {
+    "explanation": "The retrieved context is highly relevant to the query, as it provides a detailed overview of institutions in Belgium (and some international institutions) that hold Holocaust-related collections. The context explicitly lists and describes key institutions such as Kazerne Dossin, the State Archives of Belgium, CEGESOMA, the Directorate-General for War Victims, and others, all of which are directly related to the Holocaust in Belgium. It also includes information about their collections, historical significance, and accessibility, which aligns perfectly with the user's request for the most relevant institutions.",
+    "score": "3"
+  },
+  "answer_relevance": {
+    "explanation": "The generated answer directly addresses the query by listing the most relevant institutions for Holocaust research in Belgium. It categorizes the institutions clearly (major Belgian institutions, key international institutions with Belgian collections, and other notable archives) and provides concise descriptions of their focus and collections. The answer is well-structured, on-point, and aligns with the user's intent to identify institutions holding Holocaust-related materials in Belgium.",
+    "score": "3"
+  },
+  "groundedness": {
+    "explanation": "The generated answer is highly faithful to the retrieved context. It extracts and synthesizes information explicitly mentioned in the context, such as the names of institutions (e.g., Kazerne Dossin, CEGESOMA, Jewish Museum of Belgium), their collections, and their relevance to Holocaust research in Belgium. No unsupported claims or assumptions are made, and the answer adheres strictly to the details provided in the context.",
+    "score": "3"
+  }
+}

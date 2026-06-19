@@ -1,0 +1,14 @@
+{
+  "context_relevance": {
+    "explanation": "The query asks for camp sites in Germany that currently hold an archive within their premises. The retrieved context, however, does not provide any information about camp sites or archives in Germany. It only mentions the system's limitations in fulfilling the request. Since the context is empty or irrelevant to the query, it does not align with the user's intent at all.",
+    "score": "0"
+  },
+  "answer_relevance": {
+    "explanation": "The generated answer directly addresses the system's inability to fulfill the request due to limitations in its tools. While it explains why it cannot provide the information, it does not answer the user's query about camp sites with archives in Germany. Thus, the answer is not relevant to the user's original intent.",
+    "score": "0"
+  },
+  "groundedness": {
+    "explanation": "The generated answer is entirely grounded in the retrieved context, as it accurately reflects the system's stated limitations. However, since the context itself is irrelevant to the query, the groundedness score is based on the faithfulness of the answer to the (irrelevant) context rather than the query. The answer does not deviate from the context provided.",
+    "score": "3"
+  }
+}

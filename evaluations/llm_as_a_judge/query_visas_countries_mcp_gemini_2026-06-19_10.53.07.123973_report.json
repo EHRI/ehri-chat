@@ -1,0 +1,14 @@
+{
+  "context_relevance": {
+    "explanation": "The retrieved context provides a reference to a specific archival description related to visas for Jewish refugees in Lithuania during December 1940. While it does not explicitly list countries that issued visas, it is directly related to the query's topic of Jewish refugee visas during the war. This makes it somewhat relevant but not comprehensive or explicit in addressing the full scope of the query.",
+    "score": "2"
+  },
+  "answer_relevance": {
+    "explanation": "The generated answer acknowledges the lack of specific information in response to the query but provides a reference to an archival source that might contain relevant details. While it does not directly answer the question, it offers a helpful lead for further exploration. This partially addresses the user's intent but does not fully satisfy the query.",
+    "score": "1"
+  },
+  "groundedness": {
+    "explanation": "The generated answer is faithful to the retrieved context, as it accurately references the archival description provided in the context. It does not overstate or misrepresent the information in the context, ensuring factual alignment.",
+    "score": "3"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "context_relevance": {
+    "explanation": "The query specifically asks for archival material relating to raids in Amsterdam. The retrieved context includes multiple entries, but only one directly pertains to Amsterdam: the entry from the NIOD Instituut voor Oorlogs-, Holocaust- en Genocidestudies. This entry covers a broad timeframe (1931-1951) and mentions Amsterdam generally but does not explicitly confirm its relevance to raids. The other entries discuss raids in different locations (e.g., Wiesbaden, Prague, Aarhus, Lyon) or are related to broader topics (e.g., air raids on buildings, Gestapo operations). Thus, while there is one relevant entry, the majority of the context does not align closely with the query.",
+    "score": "1"
+  },
+  "answer_relevance": {
+    "explanation": "The generated answer correctly identifies the one entry related to Amsterdam and provides the relevant details (institution, EHRI Portal link, description, and identifier). However, the answer does not explicitly address whether this entry pertains to 'raids' in Amsterdam, which is the core of the query. The answer is helpful in locating archival material about Amsterdam but does not fully confirm its relevance to raids, leaving the user to infer this connection. Thus, the answer is somewhat relevant but not fully aligned with the query's intent.",
+    "score": "2"
+  },
+  "groundedness": {
+    "explanation": "The generated answer is directly grounded in the retrieved context, specifically the entry for Amsterdam from the NIOD Instituut. It accurately extracts and presents the details provided in the context, such as the institution name, EHRI Portal link, description, and identifier. There are no hallucinations or inaccuracies in the information presented, and the answer faithfully reflects the content of the retrieved context.",
+    "score": "3"
+  }
+}

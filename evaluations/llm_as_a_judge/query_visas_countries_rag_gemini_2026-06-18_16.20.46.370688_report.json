@@ -1,0 +1,14 @@
+{
+  "context_relevance": {
+    "explanation": "The retrieved context provides specific information about Australia's visa program for Jewish refugees before and during the early years of World War II, which is directly relevant to the query. It also mentions archival records of Jews who received visas in 1940, though it does not specify the issuing countries for those visas. However, the context lacks detailed information about other countries that issued visas to Jewish refugees during the war, which is a key part of the query. Thus, while the context is partially relevant, it does not fully address the broader scope of the question.",
+    "score": "2"
+  },
+  "answer_relevance": {
+    "explanation": "The generated answer accurately summarizes the information provided in the context about Australia's visa program for Jewish refugees. It also correctly notes the limitation of the context regarding other countries issuing visas during the war. However, the answer does not go beyond the provided context to address the broader query about other countries, as it explicitly states that no such information is available in the context. This makes the answer relevant but incomplete in addressing the full intent of the query.",
+    "score": "2"
+  },
+  "groundedness": {
+    "explanation": "The generated answer is highly faithful to the retrieved context. It accurately reflects the details about Australia's visa program and the archival records mentioned, without adding any unsupported information. The answer also transparently acknowledges the limitations of the context, which aligns with the groundedness criterion.",
+    "score": "3"
+  }
+}

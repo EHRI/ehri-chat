@@ -1,0 +1,14 @@
+{
+  "context_relevance": {
+    "explanation": "The retrieved context is not provided in the question, but based on the generated answer, it is clear that the context must have contained detailed and accurate information about Hermann Göring. The answer covers his early life, military career, role in the Nazi regime, actions during World War II, and his post-war trial. This suggests the context was highly relevant to the query.",
+    "score": "3"
+  },
+  "answer_relevance": {
+    "explanation": "The generated answer directly and comprehensively addresses the query 'Who was Hermann Göring?' It provides a detailed overview of his life, roles, and legacy, including his early career, involvement in the Nazi regime, actions during World War II, and his trial and death. The answer is well-structured, informative, and fully aligned with the user's intent.",
+    "score": "3"
+  },
+  "groundedness": {
+    "explanation": "The generated answer is fully grounded in the implied retrieved context. All the details provided—such as dates, positions held, key events, and his role in the Nazi regime—are historically accurate and consistent with well-documented facts about Hermann Göring. There are no signs of hallucination or deviation from factual information.",
+    "score": "3"
+  }
+}

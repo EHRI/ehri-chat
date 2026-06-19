@@ -1,0 +1,14 @@
+{
+  "context_relevance": {
+    "explanation": "The query asks for camp sites in Germany that currently hold an archive within their premises. The retrieved context, however, specifies that the EHRI Portal focuses exclusively on Holocaust-related archives and does not provide information about general camp sites with archives. While the context is relevant to archives, it does not address the specific request about camp sites in Germany today, nor does it provide any information about non-Holocaust-related archives. Thus, the context is only marginally relevant to the query.",
+    "score": "1"
+  },
+  "answer_relevance": {
+    "explanation": "The generated answer directly addresses the limitations of the EHRI Portal in relation to the query. It clarifies that the system's focus is on Holocaust-related archives and that it cannot provide information about general camp sites with archives. While the answer is honest and aligns with the context, it does not fulfill the user's request or provide any actionable insights about camp sites in Germany with archives. Thus, the answer is not relevant to the user's intent.",
+    "score": "1"
+  },
+  "groundedness": {
+    "explanation": "The generated answer is fully grounded in the retrieved context. It accurately reflects the scope of the EHRI Portal and its limitations regarding the query. There are no factual inaccuracies or unsupported claims in the answer, as it directly references the context provided.",
+    "score": "3"
+  }
+}

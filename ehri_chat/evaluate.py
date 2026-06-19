@@ -130,8 +130,8 @@ if __name__ == "__main__":
         }
 
         print("Evaluating...")
-        for key, query in queries.items():
-            for method in methods:
+        for method in methods:
+            for key, query in queries.items():
                 for provider in providers:
                     model = ""
                     match provider:

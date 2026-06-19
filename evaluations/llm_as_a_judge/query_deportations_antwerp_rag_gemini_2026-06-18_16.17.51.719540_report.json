@@ -1,0 +1,14 @@
+{
+  "context_relevance": {
+    "explanation": "The retrieved context directly addresses the query about deportations of Jews in Antwerp. The first two paragraphs specifically mention the deportation of Jews from Antwerp to Limburg in 1940, which aligns perfectly with the user's request. The remaining archival descriptions, while related to deportations, are less relevant as they pertain to other locations (Vienna, Cologne) and time periods (1941, 1943, 1951-1954, 1970). However, the most relevant portion of the context is highly pertinent to the query.",
+    "score": "3"
+  },
+  "answer_relevance": {
+    "explanation": "The generated answer focuses on the deportation of Jews from Antwerp to Limburg in 1940, which is the most relevant part of the retrieved context. It directly addresses the user's query by summarizing the key details: the timing (end of 1940), the destination (Limburg), and the temporary nature of the deportation. The answer is concise and aligns well with the user's intent.",
+    "score": "3"
+  },
+  "groundedness": {
+    "explanation": "The generated answer is fully grounded in the retrieved context. It accurately reflects the information provided in the first two paragraphs of the context, which describe the deportation of Jews from Antwerp to Limburg in 1940 and their subsequent return. There are no inaccuracies or unsupported claims in the answer, and it faithfully represents the content of the context.",
+    "score": "3"
+  }
+}

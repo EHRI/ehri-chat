@@ -1,0 +1,14 @@
+{
+  "context_relevance": {
+    "explanation": "The retrieved context is highly relevant to the query about the situation of Belgium during the Holocaust. It includes detailed archival descriptions that directly address the persecution of Jews in Belgium, testimonies from survivors, and various documents related to Jewish life before, during, and after the Holocaust. The context covers multiple aspects such as anti-Semitic laws, deportations, resistance efforts, and post-war reconstruction, all of which are critical to understanding the Holocaust's impact on Belgium.",
+    "score": "3"
+  },
+  "answer_relevance": {
+    "explanation": "The generated answer directly addresses the query by summarizing the key points from the retrieved context. It provides a coherent overview of the persecution of Jews in Belgium, including details on testimonies, reports, and personal documentation. The answer aligns well with the user's intent, offering valuable insights into the historical situation without deviating from the topic.",
+    "score": "3"
+  },
+  "groundedness": {
+    "explanation": "The generated answer is highly faithful to the retrieved context. It accurately reflects the information provided in the archival descriptions, such as the Visual History Archive testimonies, the War Crimes Commission reports, and personal documentation on Jewish life. The answer does not introduce unsupported claims or misrepresent the context, ensuring factual accuracy and reliability.",
+    "score": "3"
+  }
+}
