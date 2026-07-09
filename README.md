@@ -1,4 +1,4 @@
-# EHRI chat: RAG, Graph-RAG and MCP using the European Holocaust Research Infrastructure Knowledge Graph data
+# EHRI chat: RAG, GraphRAG and MCP using the European Holocaust Research Infrastructure Knowledge Graph data
 
 EHRI chat is a specialised Retrieval-Augmented Generation (RAG) system designed to enhance Large Language Model (LLM) responses using authoritative and curated data from the [European Holocaust Research Infrastructure Knowledge Graph (EHRI-KG)](https://lod.ehri-project-test.eu/). 
 It exploits the idea of providing additional context to LLMs in order to improve their accuracy and surpass the training cut-off date.
@@ -93,6 +93,42 @@ In the future more entities will be supported and additional retrieval methods (
 This tool is a research project and therefore a small SQLite database is created when using it. You can use it to analyse the introduced prompts together with the generated responses in order to get a better understanding of how the combination of enrichement options and the different models affects the results.
 
 The database will be automatically created in the first run and stored under `db/activity.db`
+
+## Evaluation
+The project includes scripts to run an automated evaluation and to analyse the results.
+
+### Running the evaluation
+`ehri_chat/evaluate.py` runs all configured queries against every combination of model and retrieval mode, collects the generated responses and token usage, and then calls `mistral-large-latest` as an LLM judge to score each result on three criteria: Context Relevance (CR), Answer Relevance (AR), and Groundedness (G). Each criterion is scored from 0 (no relevance) to 3 (fully relevant). Results are written as JSON files under `evaluations/llm_as_a_judge/` and `evaluations/tokens_usage/`.
+
+```bash
+python -m ehri_chat.evaluate
+```
+
+### Analysing the results
+`evaluations/report.py` reads the JSON output files and prints a formatted table or exports a CSV. It supports filtering and sorting by any column.
+
+```bash
+# Print all results as a table
+python -m evaluations.report
+
+# Filter by model and/or mode
+python -m evaluations.report --model gemini --mode rag
+
+# Export as CSV to a file
+python -m evaluations.report --format csv --output evaluations/report.csv
+
+# Sort by a specific column (model, mode, query, cr, ar, g, tokens in, tokens out)
+python -m evaluations.report --sort-by cr
+```
+
+To export one CSV file per mode/model combination, use the provided shell script from the `evaluations/` directory:
+
+```bash
+cd evaluations
+bash reportToIndividualCSVFiles.sh
+```
+
+This produces files named `report_<mode>_<model>.csv` (e.g. `report_rag_gemini.csv`) in the `evaluations/` directory.
 
 ## Limitations
 - Context flooding: Some of the context retrieval methods may incur in a higher consumption of the context limit. The application was designed to minimise this by only inputting the most relevant fields for each entity, trying in this way to reduce redundant data. However, for some specific cases the context can be flooded (especially when using small local LLMs) or the application can have a higher than expected token consumption.
