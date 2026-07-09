@@ -1,0 +1,14 @@
+{
+  "context_relevance": {
+    "explanation": "The query specifically asks for information about the deportations of Jews in Antwerp. The retrieved context includes multiple relevant entries:\n1. The 'Jewish Registry of Antwerp' provides a name list of the Antwerp Jewish Community, which is somewhat relevant but does not directly address deportations.\n2. The 'Index cards of the Möbelaktion (Räumung) in Antwerp' collection directly relates to the confiscation of Jewish homes in Antwerp, which is closely linked to the deportation efforts. This entry provides detailed historical context about the Nazi operations targeting Jewish properties, which occurred in conjunction with deportations.\n3. Other entries, such as those related to deportations in Vienna, Prague, and general Holocaust documentation, are not relevant to Antwerp.\n\nGiven the presence of highly relevant information about Antwerp specifically, the context relevance is strong.",
+    "score": "3"
+  },
+  "answer_relevance": {
+    "explanation": "The generated answer provides a clear and concise summary of the relevant archival descriptions:\n1. It highlights the 'Jewish Registry of Antwerp,' which, while not directly about deportations, is tangentially related to the Jewish community in Antwerp during the relevant period.\n2. It thoroughly describes the 'Index cards of the Möbelaktion (Räumung) in Antwerp,' which directly relates to the confiscation of Jewish homes, a process closely associated with deportations.\n3. The answer omits irrelevant entries about deportations in other cities and unrelated events, focusing on the pertinent information.\n\nThe answer effectively addresses the query by providing valuable insights and relevant resources about the deportations of Jews in Antwerp.",
+    "score": "3"
+  },
+  "groundedness": {
+    "explanation": "The generated answer is well-grounded in the retrieved context:\n1. It accurately summarizes the details from the 'Jewish Registry of Antwerp' and the 'Index cards of the Möbelaktion (Räumung) in Antwerp' entries.\n2. The descriptions provided in the answer match the information in the context, including dates, institutions, languages, and specific historical details about the Nazi operations in Antwerp.\n3. The answer does not introduce any information outside of what is provided in the context, ensuring factual accuracy and reliability.",
+    "score": "3"
+  }
+}

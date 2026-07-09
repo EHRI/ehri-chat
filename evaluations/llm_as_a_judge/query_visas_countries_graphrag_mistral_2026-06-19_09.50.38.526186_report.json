@@ -1,0 +1,14 @@
+{
+  "context_relevance": {
+    "explanation": "The retrieved context provides detailed information about archival institutions in Australia, Argentina, Canada, and the United Kingdom, as well as specific archival descriptions from Yad Vashem and the Alex Dworkin Canadian Jewish Archives. While the context includes extensive details about Holocaust-related collections and refugee records, it does not directly address the query about *which countries issued visas for Jewish refugees during the War*. The context is more focused on archival holdings, institutions, and lists of refugees rather than explicit visa policies or issuance by specific countries. However, it does mention records of refugees who received visas (e.g., lists from Yad Vashem) and countries that received refugees (e.g., Australia, Canada, and the UK). Thus, the context is somewhat relevant but lacks a direct and comprehensive answer to the query.",
+    "score": "1"
+  },
+  "answer_relevance": {
+    "explanation": "The generated answer provides insights into countries and institutions that may have been involved in issuing visas or hosting Jewish refugees during the War. It highlights specific archival records (e.g., lists of Jews who received visas in 1940) and mentions countries like Switzerland, Australia, Canada, and the UK. However, the answer does not explicitly state which countries issued visas, instead focusing on archival sources and refugee movements. While the answer is somewhat helpful, it does not fully address the user's intent, which was to identify specific countries that issued visas. The response is more of a summary of relevant archival information rather than a direct answer to the query.",
+    "score": "1"
+  },
+  "groundedness": {
+    "explanation": "The generated answer is largely grounded in the retrieved context. It accurately references specific archival descriptions (e.g., lists of Jews who received visas, records of interned refugees) and institutions (e.g., Yad Vashem Archives, Alex Dworkin Canadian Jewish Archives). The answer also correctly identifies countries mentioned in the context, such as Switzerland, Australia, and Canada, as being involved in refugee movements or visa-related processes. However, the answer occasionally extrapolates beyond the context by implying that certain countries issued visas without explicit evidence in the provided context (e.g., Switzerland is mentioned in the context as holding lists of refugees who received visas, but the context does not confirm that Switzerland itself issued visas). Thus, while the answer is mostly grounded, there are minor instances where it slightly overreaches the provided context.",
+    "score": "2"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "context_relevance": {
+    "explanation": "The retrieved context provides information about the Roma Holocaust (Porrajmos) but focuses primarily on Hungary, Poland, Bohemia, Moravia, and Lithuania. There is no direct or specific mention of the fate of Roma in France during the Holocaust. While the context is relevant to the broader topic of the Roma Holocaust, it does not align well with the user's specific query about France. Thus, the relevance to the query is low.",
+    "score": "1"
+  },
+  "answer_relevance": {
+    "explanation": "The generated answer directly addresses the user's query by explicitly stating that the provided context does not include information about the fate of Roma in France during the Holocaust. It also suggests alternative resources for further research, which is helpful and aligns with the user's intent. The answer is clear, concise, and relevant to the query.",
+    "score": "3"
+  },
+  "groundedness": {
+    "explanation": "The generated answer is entirely faithful to the retrieved context. It accurately reflects the absence of information about France in the context and does not make any unsupported claims or assumptions. The answer is grounded in the provided context and does not deviate from it.",
+    "score": "3"
+  }
+}

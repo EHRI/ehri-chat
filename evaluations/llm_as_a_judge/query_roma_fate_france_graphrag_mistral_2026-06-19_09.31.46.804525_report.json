@@ -1,0 +1,14 @@
+{
+  "context_relevance": {
+    "explanation": "The retrieved context primarily discusses Holocaust-related archives and collections in Israel, detailing various institutions and their holdings. While it mentions the broader context of Holocaust documentation and includes some references to Roma-related materials (e.g., testimonies of Roma Holocaust survivors, documents on Roma persecution in Austria, and a short film about Romani children in a Czech camp), it does not provide specific information about the fate of Roma in France during the Holocaust. The context is largely irrelevant to the user's query, as it does not address the geographical or thematic focus of the question.",
+    "score": "0"
+  },
+  "answer_relevance": {
+    "explanation": "The generated answer acknowledges the lack of specific information about the fate of Roma in France during the Holocaust within the provided context. It then offers general guidance on where to find such information, such as suggesting relevant institutions like the United States Holocaust Memorial Museum, Fondation Maison des Sciences de l'Homme, Archives Nationales in France, and the EHRI Portal. While the answer is helpful in directing the user to potential resources, it does not directly address the query based on the given context. Thus, the answer is somewhat relevant but not fully aligned with the user's intent due to the lack of specific information in the context.",
+    "score": "1"
+  },
+  "groundedness": {
+    "explanation": "The generated answer is grounded in the fact that the provided context does not contain specific information about the fate of Roma in France during the Holocaust. The answer transparently communicates this limitation and suggests alternative resources for further research. However, since the answer does not derive specific claims from the context itself, its groundedness is somewhat indirect. It does not misrepresent the context but also does not rely on it for substantive content.",
+    "score": "2"
+  }
+}

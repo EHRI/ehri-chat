@@ -1,0 +1,14 @@
+{
+  "context_relevance": {
+    "explanation": "The query asks for camp sites in Germany that currently hold an archive within their premises. The retrieved context provides a list of memorial sites associated with former concentration camps in Germany, all of which include archives related to the history of these camps. The context is highly relevant as it directly addresses the query by identifying specific locations with archives. However, the query specifies 'these days,' and while the context implies these archives are currently active, it does not explicitly confirm their present-day status. Nonetheless, the relevance is strong.",
+    "score": "3"
+  },
+  "answer_relevance": {
+    "explanation": "The generated answer directly responds to the query by listing camp sites in Germany that hold archives within their premises. It provides detailed information about each location, including the nature of the archives and links to their websites. The answer is highly relevant, as it fully addresses the user's intent and provides valuable insights into the archives available at these sites.",
+    "score": "3"
+  },
+  "groundedness": {
+    "explanation": "The generated answer is entirely grounded in the retrieved context. It accurately reflects the information provided in the context, listing the same memorial sites and describing their archives without adding unsupported details or misrepresenting the context. The answer maintains factual accuracy and reliability based on the retrieved information.",
+    "score": "3"
+  }
+}

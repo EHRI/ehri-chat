@@ -1,0 +1,14 @@
+{
+  "context_relevance": {
+    "explanation": "The retrieved context is empty, which means no relevant information was provided to address the user's query about deportations of Jews in Antwerp. Since the context does not contain any details or references related to the query, it cannot be considered relevant.",
+    "score": "0"
+  },
+  "answer_relevance": {
+    "explanation": "The generated answer does not directly address the user's query about deportations of Jews in Antwerp. Instead, it provides a procedural response about searching for information using the EHRI Portal. While it acknowledges the query, it does not offer any substantive details or insights about the deportations themselves, making it only minimally relevant.",
+    "score": "1"
+  },
+  "groundedness": {
+    "explanation": "Since the retrieved context is empty, the generated answer cannot be grounded in any provided information. The answer refers to an external search process but does not rely on or cite any specific context. Thus, it cannot be considered faithful to the retrieved context.",
+    "score": "0"
+  }
+}

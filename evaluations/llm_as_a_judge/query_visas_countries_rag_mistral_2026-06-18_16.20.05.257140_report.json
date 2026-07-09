@@ -1,0 +1,14 @@
+{
+  "context_relevance": {
+    "explanation": "The retrieved context provides some information about Australia issuing visas to Jewish refugees before the outbreak of World War II. It also mentions archival lists of Jews who received visas in 1940, though it does not specify the issuing countries for these visas. Additionally, there is a reference to Jewish refugees in the US, but it pertains to fundraising rather than visa issuance. While the context partially addresses the query, it is limited in scope and does not provide a comprehensive overview of countries that issued visas to Jewish refugees during the war.",
+    "score": "2"
+  },
+  "answer_relevance": {
+    "explanation": "The generated answer directly addresses the user's query by summarizing the information available in the context. It highlights Australia as a country that issued visas to Jewish refugees before the war and acknowledges the limitations of the provided context. The answer is clear, concise, and aligns well with the user's intent, though it notes the need for additional information to fully answer the query.",
+    "score": "3"
+  },
+  "groundedness": {
+    "explanation": "The generated answer is highly faithful to the retrieved context. It accurately reflects the details about Australia's visa program and the archival references provided. The answer does not introduce any unsupported claims or misrepresent the context, ensuring factual accuracy and reliability.",
+    "score": "3"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "context_relevance": {
+    "explanation": "The retrieved context primarily focuses on archives related to concentration camps, particularly those holding historical records from the Nazi era. While it mentions several memorial sites (e.g., Buchenwald, Dachau, Sachsenhausen) and archival institutions (e.g., Arolsen Archives, Bundesarchiv), it does not explicitly confirm whether these sites currently hold archives *within their premises* as camp sites. The context is somewhat relevant but lacks specificity about the physical presence of archives at modern-day camp sites in Germany.",
+    "score": "2"
+  },
+  "answer_relevance": {
+    "explanation": "The generated answer directly addresses the query by listing concentration camp memorial sites in Germany that hold archives. It provides detailed information about each site, including the types of records they maintain, which aligns well with the user's intent. The answer is highly relevant, as it not only identifies the sites but also offers additional resources (e.g., Arolsen Archives) that could be useful for further research. However, the query specifically asks for *camp sites* with archives, and while the answer includes memorial sites, it does not clarify whether these are still operational as camp sites today.",
+    "score": "3"
+  },
+  "groundedness": {
+    "explanation": "The generated answer is well-grounded in the retrieved context, as it accurately references the memorial sites (e.g., Buchenwald, Dachau, Sachsenhausen) and archival institutions (e.g., Arolsen Archives) mentioned in the context. The answer expands on the context by providing additional details (e.g., types of records, websites) that are consistent with the historical and archival focus of the retrieved information. However, the context does not explicitly state whether these sites are still camp sites today, which slightly weakens the groundedness of the answer in that regard.",
+    "score": "3"
+  }
+}

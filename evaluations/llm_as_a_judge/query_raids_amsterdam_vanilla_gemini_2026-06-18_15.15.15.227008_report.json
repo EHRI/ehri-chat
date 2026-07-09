@@ -1,0 +1,14 @@
+{
+  "context_relevance": {
+    "explanation": "The retrieved context is empty, which means no specific information was provided to address the user's query about locating archival material relating to raids in Amsterdam. Since there is no context to evaluate, it cannot align with the query's intent or provide any relevant information.",
+    "score": "0"
+  },
+  "answer_relevance": {
+    "explanation": "The generated answer is somewhat relevant to the query as it acknowledges the user's request about locating archival material related to raids in Amsterdam. However, it does not directly provide specific information or resources. Instead, it asks for clarification, which, while helpful for refining the search, does not fully address the original query. Thus, the answer is partially relevant but lacks concrete insights or direct assistance.",
+    "score": "1"
+  },
+  "groundedness": {
+    "explanation": "Since the retrieved context is empty, the generated answer cannot be grounded in any provided information. The answer is a generic response that does not rely on or reference any specific context, making it impossible to evaluate its faithfulness to the context. Therefore, the groundedness score must be the lowest possible.",
+    "score": "0"
+  }
+}

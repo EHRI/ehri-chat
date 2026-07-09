@@ -1,0 +1,14 @@
+{
+  "context_relevance": {
+    "explanation": "The retrieved context provides a broad overview of archival resources related to WWII in the Netherlands, including Amsterdam. It mentions specific archives and collections, such as the Amsterdam City Archives, NIOD, and Yad Vashem, which are likely to contain material related to raids in Amsterdam. However, the context does not explicitly mention 'raids' or provide direct links to archival material specifically about raids. Instead, it focuses on general WWII-related archives and collections. Thus, while the context is relevant, it is somewhat indirect and requires further exploration to locate specific material on raids.",
+    "score": "2"
+  },
+  "answer_relevance": {
+    "explanation": "The generated answer directly addresses the user's query by identifying specific archival resources that may contain material related to raids in Amsterdam. It highlights the 'Air raid wardens' papers,' 'Documentation regarding the Holocaust from archives in the Netherlands,' and the 'Gemeentearchief Amsterdam' microfilms, all of which are likely to include relevant information. The answer also provides additional resources like 'Archieven WO2' and 'Kamparchieven' for further exploration. The response is helpful, on-point, and aligns well with the user's intent.",
+    "score": "3"
+  },
+  "groundedness": {
+    "explanation": "The generated answer is well-grounded in the retrieved context. It accurately references the specific archival descriptions provided, such as the 'Air raid wardens' papers' and the collections from Yad Vashem and the Amsterdam Municipal Archives. The answer does not introduce any unsupported claims or information outside the context. It also correctly interprets the scope of the archival material mentioned, ensuring factual accuracy and reliability.",
+    "score": "3"
+  }
+}

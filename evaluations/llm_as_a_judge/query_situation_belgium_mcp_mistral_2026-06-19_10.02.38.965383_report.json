@@ -1,0 +1,14 @@
+{
+  "context_relevance": {
+    "explanation": "The retrieved context provides a highly detailed and comprehensive overview of Belgium's situation during the Holocaust, including the German invasion, occupation, anti-Jewish legislation, deportations, and the persecution of Roma and Sinti. It also covers the archival landscape in Belgium, including key institutions like Kazerne Dossin, CEGESOMA, and the State Archives, as well as international holdings related to Belgium's Holocaust history. The context directly addresses the query by offering specific historical events, statistics, and archival resources, making it fully relevant to understanding Belgium's situation during the Holocaust.",
+    "score": "3"
+  },
+  "answer_relevance": {
+    "explanation": "The generated answer directly addresses the query by summarizing Belgium's situation during the Holocaust, including key events like the German invasion, anti-Jewish measures, deportations, and the persecution of Roma and Sinti. It also provides an overview of the archival situation, research resources, and challenges, aligning closely with the user's intent to understand Belgium's Holocaust history. The answer is well-structured, informative, and provides valuable insights, making it highly relevant to the query.",
+    "score": "3"
+  },
+  "groundedness": {
+    "explanation": "The generated answer is firmly grounded in the retrieved context. It accurately reflects the historical events, statistics, and archival details provided in the context, such as the number of deported Jews, the role of the Dossin Barracks, and the key institutions holding Holocaust-related materials. There are no unsupported claims or deviations from the context, ensuring high faithfulness to the retrieved information.",
+    "score": "3"
+  }
+}

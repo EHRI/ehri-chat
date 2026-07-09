@@ -1,0 +1,14 @@
+{
+  "context_relevance": {
+    "explanation": "The retrieved context is empty, which means there is no information provided to evaluate its relevance to the query. Since the context is essential for determining how well the answer aligns with the available information, the absence of context directly impacts the evaluation of this criterion.",
+    "score": "0"
+  },
+  "answer_relevance": {
+    "explanation": "The generated answer provides a detailed and comprehensive overview of Belgium's situation during the Holocaust. It addresses key aspects such as German occupation, anti-Jewish policies, deportations, resistance efforts, collaboration, and the aftermath. The answer directly aligns with the user's query and provides valuable insights into the historical context, making it highly relevant.",
+    "score": "3"
+  },
+  "groundedness": {
+    "explanation": "Since the retrieved context is empty, it is impossible to evaluate how faithful the generated answer is to the provided context. Groundedness relies on the presence of context to verify the accuracy and reliability of the answer. Without context, this criterion cannot be assessed meaningfully. However, the answer itself appears well-researched and factually consistent with historical records, suggesting high groundedness if the context were available.",
+    "score": "0"
+  }
+}

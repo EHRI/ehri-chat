@@ -1,0 +1,14 @@
+{
+  "context_relevance": {
+    "explanation": "The retrieved context is highly relevant to the query about the situation of Belgium during the Holocaust. It includes detailed archival descriptions from multiple sources (USC Shoah Foundation, Yad Vashem Archives, Lavon Institute) that directly address the persecution of Jews in Belgium, their living conditions, deportations, resistance efforts, and post-war reconstruction. The context covers all major aspects of the Holocaust in Belgium, including pre-war Jewish life, anti-Jewish laws, internment camps (Dossin Barracks), and survivor testimonies.",
+    "score": "3"
+  },
+  "answer_relevance": {
+    "explanation": "The generated answer is highly relevant to the query. It systematically addresses the situation of Belgium during the Holocaust by breaking down the information into key themes: pre-war context, German occupation and anti-Jewish measures, deportations (Dossin Barracks), resistance and survival efforts, and post-war reconstruction. The answer aligns well with the user's intent and provides a comprehensive overview based on the retrieved context.",
+    "score": "3"
+  },
+  "groundedness": {
+    "explanation": "The generated answer is fully grounded in the retrieved context. It accurately reflects the information provided in the archival descriptions, including specific details about the Association des Juifs en Belgique, the Dossin Barracks, the Comité de Défense des Juifs, and the post-war reconstruction of Jewish communities. No unsupported claims or deviations from the context are present.",
+    "score": "3"
+  }
+}

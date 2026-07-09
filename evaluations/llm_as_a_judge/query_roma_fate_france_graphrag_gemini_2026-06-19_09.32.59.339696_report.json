@@ -1,0 +1,14 @@
+{
+  "context_relevance": {
+    "explanation": "The query specifically asks about the fate of Roma in France during the Holocaust. The retrieved context primarily focuses on Holocaust-related archives and institutions in Israel, with some references to Roma Holocaust materials in other countries (e.g., Hungary, Austria, Italy, Yugoslavia, and Czechoslovakia). However, there is no direct or detailed information about the fate of Roma in France. The context is largely irrelevant to the query, as it does not address the specific geographic or demographic focus of the question.",
+    "score": "0"
+  },
+  "answer_relevance": {
+    "explanation": "Since the retrieved context does not contain information about the fate of Roma in France during the Holocaust, any generated answer based on this context would either be irrelevant or speculative. The query cannot be addressed with the provided context, making the answer relevance non-existent.",
+    "score": "0"
+  },
+  "groundedness": {
+    "explanation": "Given that the retrieved context does not include any information about the fate of Roma in France, it is impossible to evaluate the groundedness of an answer. There is no basis in the context to support or refute any claims about the query.",
+    "score": "0"
+  }
+}

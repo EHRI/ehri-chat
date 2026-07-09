@@ -1,0 +1,14 @@
+{
+  "context_relevance": {
+    "explanation": "The retrieved context provides detailed information about the fate of Roma during the Holocaust in several European countries, including Hungary, Germany, Poland, Bohemia and Moravia, Croatia, and Lithuania. However, it explicitly states that there are no sufficient findings on the history of Roma in France during the Second World War. While the context is highly relevant to the broader topic of the Roma Holocaust, it does not address the specific query about France. Thus, the relevance to the exact query is low.",
+    "score": "1"
+  },
+  "answer_relevance": {
+    "explanation": "The generated answer accurately reflects the limitations of the retrieved context. It correctly states that the provided context does not include information about the fate of Roma in France during the Holocaust. The answer is clear, concise, and directly addresses the user's query by acknowledging the lack of relevant information. This aligns well with the user's intent.",
+    "score": "3"
+  },
+  "groundedness": {
+    "explanation": "The generated answer is entirely faithful to the retrieved context. It does not speculate or provide information beyond what is present in the context. The answer explicitly mentions the countries discussed in the context and honestly communicates the absence of information about France. This demonstrates high groundedness.",
+    "score": "3"
+  }
+}

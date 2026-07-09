@@ -1,0 +1,14 @@
+{
+  "context_relevance": {
+    "explanation": "The query asks for information on countries that issued visas for Jewish refugees during the war. The retrieved context, however, does not provide any specific details about visa policies or countries involved. Instead, it mentions that the EHRI Portal focuses on Holocaust-related archival material but does not contain a comprehensive list of countries and their visa policies. This context is only tangentially related to the query, as it explains the limitations of the source rather than addressing the question directly.",
+    "score": "1"
+  },
+  "answer_relevance": {
+    "explanation": "The generated answer directly addresses the user's query by acknowledging the lack of specific information on the topic. It explains that the system (EHRI Portal) does not have a comprehensive list of countries and their visa policies for Jewish refugees. While the answer is honest and aligns with the user's intent, it does not provide the requested information, which limits its helpfulness. However, it is still relevant to the query as it clarifies the system's limitations.",
+    "score": "2"
+  },
+  "groundedness": {
+    "explanation": "The generated answer is fully grounded in the retrieved context. The context explicitly states that the EHRI Portal does not contain a comprehensive list of countries and their visa policies for Jewish refugees, and the answer faithfully reflects this limitation. There are no inaccuracies or unsupported claims in the answer.",
+    "score": "3"
+  }
+}
