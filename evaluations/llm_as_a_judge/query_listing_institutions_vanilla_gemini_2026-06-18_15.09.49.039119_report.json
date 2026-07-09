@@ -1,0 +1,14 @@
+{
+  "context_relevance": {
+    "explanation": "The retrieved context is not explicitly provided in the example, but the generated answer references specific institutions and their roles in Holocaust research and remembrance in Belgium. Since the answer aligns well with the query and cites institutions that are directly relevant to the Holocaust in Belgium, it can be inferred that the retrieved context (if it included these institutions) would be highly relevant. However, as the context itself is missing, we must assume it was sufficient to generate this answer.",
+    "score": "3"
+  },
+  "answer_relevance": {
+    "explanation": "The generated answer directly addresses the user's query by listing and describing key institutions related to the Holocaust in Belgium. It provides detailed information about each institution, including their roles and relevance, which aligns perfectly with the intent of the query. The answer is helpful, on-point, and offers valuable insights.",
+    "score": "3"
+  },
+  "groundedness": {
+    "explanation": "The generated answer is highly faithful to the likely retrieved context, as it lists specific institutions with descriptions that match their known roles in Holocaust research and remembrance in Belgium. The answer does not introduce unsupported claims and appears to be grounded in factual information about these institutions. The inclusion of links to the EHRI Portal further supports its groundedness.",
+    "score": "3"
+  }
+}

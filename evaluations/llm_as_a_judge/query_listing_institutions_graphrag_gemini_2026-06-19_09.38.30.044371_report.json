@@ -1,0 +1,14 @@
+{
+  "context_relevance": {
+    "explanation": "The retrieved context provides a highly detailed and comprehensive overview of institutions in Belgium (and some abroad) that hold Holocaust-related collections. It directly addresses the query by listing and describing key institutions such as Kazerne Dossin, the State Archives (including CEGESOMA and the Directorate-General for War Victims), city archives, and private institutions like the Jewish Museum of Belgium and the Auschwitz Foundation. The context also highlights the challenges and specificities of Holocaust research in Belgium, such as the lack of ethnic or religious registration in official records. The inclusion of institutions outside Belgium (e.g., Yad Vashem, USHMM) further enriches the relevance of the context to the query.",
+    "score": "3"
+  },
+  "answer_relevance": {
+    "explanation": "The generated answer directly addresses the user's query by listing the most relevant institutions for Holocaust research in Belgium. It synthesizes the retrieved context effectively, highlighting key institutions such as Kazerne Dossin, the State Archives (including CEGESOMA and the Directorate-General for War Victims), city archives, and private institutions. The answer also includes EHRI portal links for further exploration, which aligns perfectly with the user's intent to identify relevant institutions. The response is concise, on-point, and provides actionable information.",
+    "score": "3"
+  },
+  "groundedness": {
+    "explanation": "The generated answer is fully grounded in the retrieved context. It accurately extracts and summarizes the key institutions mentioned in the context, such as Kazerne Dossin, the State Archives, CEGESOMA, the Directorate-General for War Victims, city archives, and private institutions like the Jewish Museum of Belgium and the Auschwitz Foundation. The answer does not introduce any information outside the provided context and faithfully represents the details shared in the retrieved documents.",
+    "score": "3"
+  }
+}

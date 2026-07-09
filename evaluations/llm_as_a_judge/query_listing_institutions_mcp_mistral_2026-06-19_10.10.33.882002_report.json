@@ -1,0 +1,14 @@
+{
+  "context_relevance": {
+    "explanation": "The retrieved context contains highly relevant information for the query about institutions related to the Holocaust in Belgium. Specifically, it includes detailed archival descriptions from Yad Vashem Archives, which focus on Jewish life in Belgium during the Holocaust, the Mechelen transit camp, and the Association des Juifs en Belgique (AJB). It also references materials from the United States Holocaust Memorial Museum (USHMM) related to the liberation of Belgium. However, the context does not explicitly list Belgian institutions directly but rather points to international institutions holding relevant Belgian materials. The context is thus highly aligned with the query's intent but could benefit from more direct references to Belgian institutions.",
+    "score": "3"
+  },
+  "answer_relevance": {
+    "explanation": "The generated answer directly addresses the query by listing and describing the most relevant institutions and archival collections related to the Holocaust in Belgium. It highlights Yad Vashem Archives and USHMM, which are explicitly mentioned in the retrieved context, and provides additional context about key collections such as those related to the Mechelen transit camp and the AJB. The answer also suggests other Belgian institutions (e.g., Belgian State Archives, Jewish Museum of Belgium) that are not in the retrieved context but are logically relevant. This makes the answer highly relevant and helpful, though the inclusion of institutions not in the context slightly reduces its precision.",
+    "score": "3"
+  },
+  "groundedness": {
+    "explanation": "The generated answer is well-grounded in the retrieved context. It accurately references the archival descriptions and collections from Yad Vashem Archives and USHMM, which are explicitly detailed in the context. The answer does not fabricate information and relies on the provided data for its core content. However, the mention of additional Belgian institutions (e.g., Belgian State Archives, Jewish Museum of Belgium) is not directly supported by the retrieved context, which slightly impacts the groundedness score.",
+    "score": "2"
+  }
+}

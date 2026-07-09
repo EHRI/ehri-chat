@@ -1,0 +1,14 @@
+{
+  "context_relevance": {
+    "explanation": "1. The query specifically asks for **camp sites in Germany** that currently hold archives within their premises. \n2. The retrieved context includes multiple institutions, but only **one (Gedenkstätte und Museum Sachsenhausen in Oranienburg, Germany)** explicitly meets all criteria:\n   - Located in Germany.\n   - A former camp site (Sachsenhausen concentration camp).\n   - Has an on-site archive with relevant holdings (documents from 1933–1945).\n3. Other institutions in the context are either:\n   - Located outside Germany (e.g., Stutthof in Poland, Mauthausen in Austria).\n   - Archives not physically within a camp site (e.g., Landesarchiv Thüringen in Weimar, which holds Buchenwald records but is not on-site).\n4. The context also includes archival descriptions (e.g., microfilm records of camps), but these are not physical archives *within* camp sites.\n5. The relevance is **medium** because while Sachsenhausen is directly relevant, the other contexts are tangential or irrelevant to the query's geographic and on-site requirements.",
+    "score": "2"
+  },
+  "answer_relevance": {
+    "explanation": "1. The generated answer correctly identifies **Sachsenhausen (Oranienburg, Germany)** as the primary relevant camp site with an on-site archive, aligning with the query's intent.\n2. It clarifies the limitations of other contexts (e.g., Stutthof in Poland, Weimar archives not on-site), which is helpful for precision.\n3. The answer provides **detailed practical information** (opening hours, access requirements, website links), which directly addresses the user's need to \"locate\" such sites.\n4. However, the answer includes **Mauthausen (Austria)**, which is irrelevant to the query's focus on Germany, slightly reducing its relevance.\n5. The answer is **mostly relevant** but could be improved by omitting non-German sites and focusing solely on Germany.",
+    "score": "2"
+  },
+  "groundedness": {
+    "explanation": "1. The answer is **highly faithful** to the retrieved context for Sachsenhausen:\n   - It accurately describes the archive's holdings (documents from 1933–1945, Soviet special camp records).\n   - It correctly cites the registration requirement and opening hours.\n   - It provides the exact EHRI Portal link and website.\n2. For other institutions (e.g., Mauthausen, Weimar), the answer either:\n   - Stretches beyond the context (Mauthausen is not in Germany).\n   - Correctly notes the lack of on-site archives (Weimar).\n3. The inclusion of Mauthausen is **not grounded** in the query's requirements, but the rest of the answer aligns well with the context.\n4. Overall, the answer is **mostly grounded** but loses some fidelity due to the inclusion of irrelevant details.",
+    "score": "2"
+  }
+}

@@ -1,0 +1,11 @@
+model,mode,query,CR,AR,G,tokens in,tokens out
+mistral,graphrag,situation_belgium,3,3,3,12349,788
+mistral,graphrag,roma_fate_france,0,1,2,9388,289
+mistral,graphrag,comparison_countries,2,2,3,8278,630
+mistral,graphrag,listing_institutions,3,3,3,12407,901
+mistral,graphrag,museums_holocaust,1,2,2,5888,586
+mistral,graphrag,camps_with_archive_germany,2,2,2,7511,606
+mistral,graphrag,deportations_antwerp,2,3,3,10128,929
+mistral,graphrag,raids_amsterdam,3,3,3,6968,908
+mistral,graphrag,visas_countries,1,1,2,4954,700
+mistral,graphrag,person_information,3,3,3,4577,719

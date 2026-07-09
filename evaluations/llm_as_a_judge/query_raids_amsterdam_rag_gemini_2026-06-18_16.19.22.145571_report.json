@@ -1,0 +1,14 @@
+{
+  "context_relevance": {
+    "explanation": "The retrieved context provides general information about archival resources related to WWII in the Netherlands, including Amsterdam. It mentions specific archives like the Amsterdam City Archives and NIOD, which are likely to hold relevant material. However, the context does not explicitly mention 'raids in Amsterdam' but does reference related topics such as the Amsterdam police, betrayal of Jews, and broader WWII documentation. The context is somewhat relevant but not directly focused on the specific query about raids.",
+    "score": "2"
+  },
+  "answer_relevance": {
+    "explanation": "The generated answer acknowledges the lack of direct information about raids in Amsterdam in the provided context but suggests related resources, such as documentation on the Amsterdam police and betrayal of Jews, which could indirectly pertain to raids. It also provides useful links to broader archival resources. While the answer is helpful and aligns with the user's intent to find relevant archival material, it does not directly address the query about raids, making it somewhat relevant but not fully on-point.",
+    "score": "2"
+  },
+  "groundedness": {
+    "explanation": "The generated answer is faithful to the retrieved context. It accurately references the 'Documentation regarding the Holocaust from archives in the Netherlands' and the Amsterdam Municipal Archives, which are mentioned in the context. The answer also correctly cites the provided links and institutions. There are no inaccuracies or unsupported claims, ensuring the answer is well-grounded in the context.",
+    "score": "3"
+  }
+}

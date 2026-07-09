@@ -1,0 +1,14 @@
+{
+  "context_relevance": {
+    "explanation": "The query asks for a relation between France and Italy regarding collaboration with the Nazis. The retrieved context, however, does not provide any information about France, Italy, or their collaboration with the Nazis. Instead, it describes the limitations of the EHRI-KG MCP server's capabilities. Since the context is entirely unrelated to the query, it does not align with the user's intent.",
+    "score": "0"
+  },
+  "answer_relevance": {
+    "explanation": "The generated answer directly addresses the limitations of the system in response to the query. While it does not provide the requested information about France and Italy, it clearly explains why it cannot fulfill the query. This is helpful in setting expectations but does not address the actual question, making it only minimally relevant to the user's intent.",
+    "score": "1"
+  },
+  "groundedness": {
+    "explanation": "The generated answer is entirely faithful to the retrieved context, as it accurately reflects the limitations of the EHRI-KG MCP server mentioned in the context. There is no deviation or fabrication of information, so the answer is fully grounded in the provided context.",
+    "score": "3"
+  }
+}

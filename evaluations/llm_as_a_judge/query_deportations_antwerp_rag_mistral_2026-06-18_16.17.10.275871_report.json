@@ -1,0 +1,14 @@
+{
+  "context_relevance": {
+    "explanation": "The retrieved context directly addresses the deportation of Jews from Antwerp, specifically mentioning the deportation of a few thousand Jews from Antwerp to Limburg in late 1940. It also references local archives where traces of these events might be found. However, the context includes some irrelevant archival descriptions (e.g., Vienna, Cologne, and Theresienstadt) that do not pertain to Antwerp. While the relevant portion is highly aligned with the query, the inclusion of unrelated records slightly dilutes the overall relevance.",
+    "score": "2"
+  },
+  "answer_relevance": {
+    "explanation": "The generated answer effectively addresses the user's query by summarizing the key details about the deportation of Jews from Antwerp to Limburg in 1940. It provides actionable guidance on where to find relevant archives (e.g., Limburg, Antwerp city archives, EHRI Portal) and suggests next steps for further research. The answer is highly relevant, on-point, and aligns well with the user's intent to retrieve information about deportations in Antwerp.",
+    "score": "3"
+  },
+  "groundedness": {
+    "explanation": "The generated answer is well-grounded in the retrieved context. It accurately reflects the information about the deportation of Jews from Antwerp to Limburg and the potential traces in local archives. The answer does not introduce unsupported claims or misrepresent the context. However, it does extrapolate slightly by suggesting specific institutions (e.g., Jewish Museum of Belgium, CEGESOMA) that are not explicitly mentioned in the context, though these are reasonable and logical extensions for further research.",
+    "score": "3"
+  }
+}

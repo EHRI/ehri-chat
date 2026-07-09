@@ -1,0 +1,14 @@
+{
+  "context_relevance": {
+    "explanation": "The retrieved context does not explicitly list institutions related to the Holocaust in Belgium. Instead, it mentions that the search results were primarily archival descriptions, which are not directly relevant to the user's query about institutions. The context fails to provide specific or actionable information about relevant institutions, aligning poorly with the user's intent.",
+    "score": "1"
+  },
+  "answer_relevance": {
+    "explanation": "The generated answer acknowledges the lack of direct information about institutions related to the Holocaust in Belgium and offers alternative suggestions, such as broadening the search or refining it for archival descriptions. While the response is helpful in addressing the limitation of the search, it does not directly answer the user's query about listing relevant institutions. Thus, it only partially aligns with the user's intent.",
+    "score": "1"
+  },
+  "groundedness": {
+    "explanation": "The generated answer is faithful to the retrieved context, as it accurately reflects the lack of direct information about institutions in the context. It does not fabricate or misrepresent the information provided in the context, ensuring factual consistency. However, the groundedness is limited by the poor relevance of the context itself.",
+    "score": "3"
+  }
+}

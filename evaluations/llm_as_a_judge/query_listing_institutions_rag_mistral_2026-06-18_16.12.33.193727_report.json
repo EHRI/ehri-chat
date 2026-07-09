@@ -1,0 +1,14 @@
+{
+  "context_relevance": {
+    "explanation": "The retrieved context is highly relevant to the query, as it directly lists and describes institutions in Belgium that hold significant collections related to the Holocaust. It includes detailed information about their holdings, such as archives, testimonies, and historical documents, which align perfectly with the user's request for the most relevant institutions for the Holocaust in Belgium. The context also provides additional details about specific collections, such as the Visual History Archive and the records of the Anti-Joodse Centrale, which further enrich the relevance of the information.",
+    "score": "3"
+  },
+  "answer_relevance": {
+    "explanation": "The generated answer is highly relevant to the query. It directly addresses the user's request by listing the most relevant institutions for Holocaust-related research in Belgium. The answer includes all the key institutions mentioned in the context, such as the Directorate-General for War Victims, the Jewish Museum of Belgium, the Auschwitz Foundation, and others. It also provides additional value by including links to more information about these institutions, which enhances the helpfulness of the response.",
+    "score": "3"
+  },
+  "groundedness": {
+    "explanation": "The generated answer is fully grounded in the retrieved context. It accurately extracts and summarizes the institutions mentioned in the context without adding any unsupported information. Each institution listed in the answer corresponds directly to the details provided in the context, ensuring factual accuracy and reliability. The answer does not deviate from or misrepresent the information in the context.",
+    "score": "3"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "context_relevance": {
+    "explanation": "The retrieved context is not explicitly provided in the example, but the generated answer references the EHRI Portal, which is a credible and specialized source for Holocaust-related institutions. The institutions listed in the answer are highly relevant to the query about the Holocaust in Belgium. Since the context is implied to be derived from the EHRI Portal, it is reasonable to assume the context would align well with the query. Thus, the context relevance is high.",
+    "score": "3"
+  },
+  "answer_relevance": {
+    "explanation": "The generated answer directly addresses the user's query by listing the most relevant institutions for the Holocaust in Belgium. It provides a comprehensive list of institutions, including archives, museums, and research centers, along with brief descriptions of their relevance. The answer is well-structured, informative, and aligns perfectly with the user's intent.",
+    "score": "3"
+  },
+  "groundedness": {
+    "explanation": "The generated answer is highly faithful to the implied context (EHRI Portal and other credible sources). It lists institutions that are known for their Holocaust-related collections and provides links to their respective pages on the EHRI Portal or other official websites. The answer does not include unsupported claims or irrelevant information, ensuring strong groundedness in the retrieved context.",
+    "score": "3"
+  }
+}

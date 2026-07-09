@@ -1,0 +1,14 @@
+{
+  "context_relevance": {
+    "explanation": "The retrieved context directly addresses the query by providing multiple archival descriptions and resources related to Hermann Göring. These include biographical entries, portraits, and documents associated with his activities during Nazi Germany. The context is highly relevant as it offers specific and detailed references that align perfectly with the user's intent to learn about Hermann Göring.",
+    "score": "3"
+  },
+  "answer_relevance": {
+    "explanation": "The generated answer provides a concise introduction to Hermann Göring as a prominent figure in Nazi Germany and lists several archival resources related to him. While it does not delve into biographical details (e.g., his role, actions, or historical significance), it directly addresses the query by pointing the user to relevant sources. The answer is helpful and on-point but could be improved by including a brief summary of who Göring was for completeness.",
+    "score": "2"
+  },
+  "groundedness": {
+    "explanation": "The generated answer is fully grounded in the retrieved context. It accurately lists the archival descriptions and resources provided in the context without adding unsupported information or misrepresenting the content. The answer faithfully reflects the context's focus on archival materials related to Hermann Göring.",
+    "score": "3"
+  }
+}
