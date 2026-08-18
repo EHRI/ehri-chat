@@ -1,7 +1,7 @@
 from typing import Generator, Any
 from flask import Flask, request, Response, jsonify, render_template
 from ehri_chat.database.database_manager import DatabaseManager, ActivityRecord
-from ehri_chat.models.model_manager import LlamaCpp, MistralAPI, GeminiAPI, LLMGenerationOptions
+from ehri_chat.models.model_manager import LlamaCpp, MistralAPI, GeminiAPI, LLMGenerationOptions, LiteLLM
 import asyncio
 import logging
 logger = logging.getLogger(__name__)
@@ -39,6 +39,21 @@ def generate_response():
             model = MistralAPI()
         case "gemini-2.5-flash":
             model = GeminiAPI()
+        case "deepseek-v3.1":
+            llm_generation_options.model = "DeepSeek-V3.1"
+            model = LiteLLM()
+        case "minimax-m2.5":
+            llm_generation_options.model = "MiniMax-M2.5"
+            model = LiteLLM()
+        case "minimax-m2.7":
+            llm_generation_options.model = "MiniMax-M2.7"
+            model = LiteLLM()
+        case "glm-5.1":
+            llm_generation_options.model = "GLM-5.1"
+            model = LiteLLM()
+        case "qwen3.6-27b":
+            llm_generation_options.model = "Qwen3.6-27B"
+            model = LiteLLM()
         case _:
             model = LlamaCpp()
 

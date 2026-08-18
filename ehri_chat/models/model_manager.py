@@ -411,3 +411,11 @@ class LlamaCpp(LLModel):
         if a['function'].get('name') is None or not a['function']['name']:
             a['function']['name'] = b['function']['name']
         return a
+
+class LiteLLM(LlamaCpp):
+    def __init__(self):
+        super().__init__()
+        self.endpoint = "llm.graphia-ssh.eu"
+        self.path = "/v1/chat/completions"
+        self.key = os.getenv("LITELLM_API_KEY", "")
+        self.https = True
