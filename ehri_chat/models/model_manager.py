@@ -1,4 +1,7 @@
+import uuid
 from dataclasses import dataclass
+from functools import reduce
+from json import JSONDecodeError
 from ehri_chat.embeddings.embeddings_manager import RagEmbeddingsManager, GraphRagEmbeddingsManager
 from ehri_chat.mcp.client import MCPClient
 from ehri_chat.rag.graphrag_context_manager import GraphRagContextManager
@@ -268,12 +271,26 @@ class LlamaCpp(LLModel):
         super().__init__()
         self.endpoint = "localhost:11434"
         self.path = "/v1/chat/completions"
+        self.models_list_path = "/v1/models"
+        self.key = None
+        self.https = False
+
+    async def get_available_models(self):
+        logger.debug(f"Obtaining available models for: {self.endpoint}")
+        conn = http.client.HTTPConnection(self.endpoint) if not self.https else http.client.HTTPSConnection(self.endpoint)
+        headers = {}
+        if self.key is not None:
+            headers['Authorization'] = f"Bearer {self.key}"
+        conn.request('GET', self.models_list_path, None, headers)
+        return json.loads(conn.getresponse().read())
 
     async def get_results_llm(self, user_prompt, mcp = None, history: list = None, generation_options: LLMGenerationOptions = LLMGenerationOptions(), evaluation: Evaluation = None):
         tools = None
         logger.debug(f"Generated prompt: {user_prompt}")
-        conn = http.client.HTTPConnection(self.endpoint)
+        conn = http.client.HTTPConnection(self.endpoint) if not self.https else http.client.HTTPSConnection(self.endpoint)
         headers = {'Content-type': 'application/json'}
+        if self.key is not None:
+            headers['Authorization'] = f"Bearer {self.key}"
         dict_initial_data = {
             "model": generation_options.model if generation_options.model is not None else "qwen3-vl:2b-instruct-q4_K_M",
             "messages": self.generate_messages(user_prompt, history = history, mcp = mcp is not None),
@@ -292,10 +309,18 @@ class LlamaCpp(LLModel):
         async def generate(json_data):
             try:
                 agent_loop = True # first execution
-                while agent_loop:
+                iterations = 0
+                while agent_loop and iterations <= 20:
+                    iterations += 1
                     agent_loop = tools is not None
+                    print(json_data)
                     conn.request('POST', self.path, json_data, headers)
+                    previous_reasoning_state = False
+                    chunks_history = []
                     for event in conn.getresponse():
+                        tools_calls = []
+                        tools_results = []
+                        print(event)
                         if event.startswith(b"data:") and b"data: [DONE]" not in event:
                             chunk = json.loads(event.decode().rstrip("\n").replace("data:", "", 1))
                             if chunk['choices'][0]['delta'] is not None:
@@ -303,21 +328,86 @@ class LlamaCpp(LLModel):
                                 if finish_reason not in ["tool_content", None, "tool_calls"]:
                                     agent_loop = False
                                 if chunk['choices'][0]['delta'].get('tool_calls', None) is not None:
+                                    chunks_history.append(chunk)
                                     for tc in chunk['choices'][0]['delta']['tool_calls']:
-                                        args = json.loads(tc['function']['arguments'])
-                                        logger.debug(f"  → calling tool {tc['function']['name']}({args})")
-                                        tool_result = await mcp.call_mcp_tool(tc['function']['name'], args)
-                                        json_payload = json.loads(json_data)
-                                        json_payload['messages'].append({
+                                        if tc.get('id') is None or tc.get('function') is None or tc['function'].get('name') is None or tc['function'].get('arguments') is None:
+                                            result = self.try_to_merge_with_history(chunk, chunks_history)
+                                            if result is not None:
+                                                tc = result
+                                        arguments = tc['function']['arguments'] if tc['function']['arguments'] is not None else "{}"
+                                        random_id = f"call_{uuid.uuid4()}"
+                                        call_id = tc['id'] if tc['id'] is not None else random_id
+                                        name = tc['function']['name'] if tc['function'] is not None and tc['function']['name'] is not None else "Unknown"
+                                        try:
+                                            args = json.loads(arguments)
+                                            logger.debug(f"  → calling tool {tc['function']['name']}({arguments})")
+                                            tool_result = await mcp.call_mcp_tool(name, args)
+                                        except JSONDecodeError as e:
+                                            tool_result = f"Error while parsing arguments as JSON. Try again and provide the mandatory arguments."
+                                        if tc['id'] is None or tc['function']['name'] is None or tc['function']['arguments'] is None:
+                                            tool_result = f"The tool calling request has no valid id or name."
+                                        tools_calls.append({
+                                            "id": call_id,
+                                            "type": tc['type'] if hasattr(tc, 'type') else "function",
+                                            "function": {
+                                                "name": name,
+                                                "arguments": arguments
+                                            }
+                                        })
+                                        tools_results.append({
                                             "role": "tool",
-                                            "tool_call_id": tc['id'],
+                                            "name": name,
+                                            "tool_call_id": call_id,
                                             "content": tool_result,
                                         })
-                                        json_data = json.dumps(json_payload)
+                                    json_payload = json.loads(json_data)
+                                    json_payload['messages'].append({
+                                        "role": "assistant",
+                                        "content": None,
+                                        "tool_calls": tools_calls
+                                    })
+                                    for tr in tools_results:
+                                        json_payload['messages'].append(tr)
+                                    json_data = json.dumps(json_payload)
+                                    with open("test_messages", "a") as f:
+                                        f.write("\n\n" + json_data)
                                 else:
+                                    reasoning_part = chunk['choices'][0]['delta'].get("reasoning_content", "")
                                     message_part = chunk['choices'][0]['delta'].get('content', "")
-                                    yield message_part if message_part is not None else ""
+                                    if reasoning_part:
+                                        if previous_reasoning_state:
+                                            yield reasoning_part if reasoning_part is not None else ""
+                                        else:
+                                            previous_reasoning_state = True
+                                            yield f"<think>{reasoning_part}" if reasoning_part is not None else "<think>"
+
+                                    if message_part:
+                                        if previous_reasoning_state:
+                                            previous_reasoning_state = False
+                                            yield f"</think>\n{message_part}" if message_part is not None else "</think>"
+                                        else:
+                                            yield message_part if message_part is not None else ""
             finally:
                 if mcp:
                     await mcp.close()
         return generate(json_initial_data)
+
+    def try_to_merge_with_history(self, current_chunk: dict, chunks_history: list[dict]) -> dict | None:
+        candidates = list(filter(lambda i: i['id'] == current_chunk['id'] and i['choices'][0]['delta'].get('tool_calls') is not None, chunks_history))
+        if len(candidates) > 0:
+            tc_candidates = list(map(lambda i: i['choices'][0]['delta']['tool_calls'][0], candidates))
+            tc = reduce(lambda a, b: self.merge_with_lower_level(a, b) , tc_candidates)
+            return tc if tc['id'] is not None and tc['function']['name'] is not None and tc['function']['arguments'] is not None else None
+        else:
+            return None
+
+    def merge_with_lower_level(self, a, b):
+        if a.get('id') is None or not a['id']:
+            a['id'] = b['id']
+        if a['function'].get('arguments') is None or not a['function']['arguments']:
+            a['function']['arguments'] = b['function']['arguments']
+            if str(a['function']['arguments']).startswith("{") and not str(a['function']['arguments']).endswith("}"):
+                a['function']['arguments'] = a['function']['arguments'] + "}"
+        if a['function'].get('name') is None or not a['function']['name']:
+            a['function']['name'] = b['function']['name']
+        return a

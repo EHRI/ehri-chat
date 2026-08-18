@@ -39,8 +39,6 @@ def generate_response():
             model = MistralAPI()
         case "gemini-2.5-flash":
             model = GeminiAPI()
-        case "qwen3-vl:2b-instruct-q4_K_M":
-            model = LlamaCpp()
         case _:
             model = LlamaCpp()
 
@@ -68,6 +66,10 @@ def generate_response():
 
     return __iter_over_async(generate())
 
+@app.route("/models")
+def models():
+    result = asyncio.run(LlamaCpp().get_available_models())
+    return jsonify(result)
 @app.route("/health")
 def health():
     return jsonify({"status": "ok"})

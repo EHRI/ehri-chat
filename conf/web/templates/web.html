@@ -123,6 +123,19 @@
             transition: background-color 0.2s ease;
         }
 
+        .message.assistant .message-content .reasoning {
+            font-size: small;
+            color: grey;
+        }
+
+        .message.assistant .message-content .collapsed {
+            -webkit-line-clamp: 1;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 0.5em;
+        }
+
         .message.assistant .message-content:hover {
             background-color: #f9fafb;
         }
@@ -313,7 +326,6 @@
             ></textarea>
             <div class="configuration-options">
                 <select name="modelInput" class="model-input">
-                    <option value="Qwen3-VL:2B-Instruct-Q4_K_M">Qwen3-VL:2B-Instruct-Q4_K_M</option>
                     <option value="Mistral-small-latest">Mistral-small-latest</option>
                     <option value="Gemini-2.5-Flash">Gemini-2.5-Flash</option>
                 </select>
@@ -490,9 +502,14 @@
                     for (const chunk of chunks) {
                         fullResponse += chunk;
                         const regex = /<p>\s*<\/p>/gi;
+                        const fullResponseWithReasoningMarked = fullResponse
+                            .replaceAll(/<think>/gi, "<div class=\"reasoning\">💡 ")
+                            .replaceAll(/<\/think>/gi, "</div>")
                         assistantContent.innerHTML = DOMPurify.sanitize(
-                            marked.parse(fullResponse).replaceAll(regex, "")
+                            marked.parse(fullResponseWithReasoningMarked)
+                                .replaceAll(regex, "")
                         ).replaceAll("<a", "<a target='_blank'");
+                        collapseReasoningBlocks();
                         chatContainer.scrollTop = chatContainer.scrollHeight;
                         // if (line.startsWith('data: ')) {
                         //     try {
@@ -600,6 +617,17 @@
             return false;
         }
 
+        function collapseReasoningBlocks() {
+            const reasoningBlocks = document.querySelectorAll(".reasoning");
+            reasoningBlocks.forEach(e => {
+                if(e.nextElementSibling != null && !e.nextElementSibling.classList.contains("reasoning"))
+                    e.classList.add("collapsed");
+                e.addEventListener("click", _ => {
+                    e.classList.contains("collapsed") ? e.classList.remove("collapsed") : e.classList.add("collapsed");
+                })
+            });
+        }
+
         async function sendMessage() {
             const message = chatInput.value.trim();
             if (!message || isGenerating) return;
@@ -635,6 +663,22 @@
             .catch(error => {
                 console.error('Engine not available:', error);
                 chatWrapper.innerHTML = '<div class="error-message">Engine not running. Please start engine.py first.</div>';
+            });
+
+        fetch(`${API_URL}/models`)
+            .then(response => response.json())
+            .then(data => {
+                console.log('Locally available models:', data);
+                const modelInputSelect = document.getElementsByName("modelInput")[0];
+                data.data.forEach(e => {
+                    let option = document.createElement('option');
+                    option.value = e.id;
+                    option.innerHTML = e.id;
+                    modelInputSelect.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('Impossible to retrieve local models:', error);
             });
 
         window.onload = function() {

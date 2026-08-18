@@ -45,9 +45,12 @@ class MCPClient:
 
     async def call_mcp_tool(self, name: str, args: dict) -> str:
         result = await self.session.call_tool(name, args)
-        return "\n".join(
-            block.text for block in result.content if hasattr(block, "text")
-        )
+        if result.isError:
+            return f"Error while calling tool, revise the function name, the passed arguments (and whether they are empty) and try again."
+        else:
+            return "\n".join(
+                block.text for block in result.content if hasattr(block, "text")
+            )
 
     async def get_tools(self):
         return (await self.session.list_tools()).tools
